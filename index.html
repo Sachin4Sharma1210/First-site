@@ -31,7 +31,7 @@
         .tab-content.active { display: block; }
 
         /* --- MAGIC LIGHTING BUTTON --- */
-        .magic-btn { position: relative; padding: 20px; background: #000; color: #fff; text-decoration: none; border-radius: 15px; overflow: hidden; display: block; margin-bottom: 20px; transition: 0.3s; z-index: 1; border: none; }
+        .magic-btn { position: relative; padding: 20px; background: #000; color: #fff; text-decoration: none; border-radius: 15px; overflow: hidden; display: block; margin-bottom: 20px; transition: 0.3s; z-index: 1; border: none; cursor: pointer; width: 100%; box-sizing: border-box; }
         .rainbow-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 150%; height: 600%; background: conic-gradient(#ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000); animation: rotateBg 3s linear infinite; z-index: -1; }
         .magic-btn::after { content: ''; position: absolute; inset: 3px; background: #0a0a0a; border-radius: 12px; z-index: 0; }
         .btn-content { position: relative; z-index: 3; display: block; }
@@ -71,7 +71,7 @@
 
     <nav>
         <div class="logo">➤ 𝕊𝔸ℂℍ𝕀ℕ 𝕊ℍ𝔸ℝ𝕄𝔸</div>
-        <div style="cursor:pointer; font-size: 1.5rem; color: var(--glow);" onclick="openModal()">☰</div>
+        <div style="cursor:pointer; font-size: 1.5rem; color: var(--glow);" onclick="openModal('Site Updating!', 'हम साइट को लगातार अपडेट करने में लगे हुए हैं, इसलिए थोड़ा टाइम लगेगा। जब तक आप हमारे साथ बने रहिए, जल्द ही अपडेट आएगा!')">☰</div>
     </nav>
 
     <section class="hero">
@@ -106,6 +106,24 @@
                 </span>
                 <div class="rainbow-glow"></div>
             </a>
+
+            <div onclick="openModal('Batch Coming Soon!', '📚 Batch: SSC CGL Foundation by SACHIN SHARMA <br>📊 Items: 2651 <br><br> इस पर काम चल रहा है, जल्द ही यह batch लाइव होगा!')" class="magic-btn">
+                <span class="btn-content">
+                    <i class="fas fa-database"></i><br>
+                    SSC CGL Foundation<br>
+                    <small>Credit: ➤ 𝕊𝔸ℂℍ𝕀ℕ 𝕊ℍ𝔸ℝ𝕄𝔸 | 2651 Items</small>
+                </span>
+                <div class="rainbow-glow"></div>
+            </div>
+
+            <div onclick="openModal('Batch Coming Soon!', '📚 Batch: SSC pratham by SACHIN SHARMA <br>📊 Items: 2561 <br><br> इस पर काम चल रहा है, जल्द ही यह batch लाइव होगा!')" class="magic-btn">
+                <span class="btn-content">
+                    <i class="fas fa-layer-group"></i><br>
+                    SSC pratham<br>
+                    <small>Credit: ➤ 𝕊𝔸ℂℍ𝕀ℕ 𝕊ℍ𝔸ℝ𝕄𝔸 | 2561 Items</small>
+                </span>
+                <div class="rainbow-glow"></div>
+            </div>
         </div>
 
         <div id="upcoming" class="tab-content">
@@ -131,15 +149,13 @@
     <div class="social-box">
         <h3 style="color: var(--glow); margin-bottom: 10px;">Connect With Me</h3>
         <a href="https://t.me/Avigat1210" target="_blank" class="btn"><i class="fab fa-telegram"></i> Telegram Channel</a>
-        <a href="https://chat.whatsapp.com/KAiJ0wBP7Yg18Fu3wmsQj7" target="_blank" class="btn"><i class="fab fa-whatsapp"></i> WhatsApp Channel</a>
-        <a href="https://www.instagram.com/agnivesh10m?igsh=bXFxbmIxdmRlbG50" target="_blank" class="btn"><i class="fab fa-instagram"></i> Instagram Profile</a>
     </div>
 
     <div id="menuModal" class="modal-overlay" onclick="closeModal()">
         <div class="popup-box" onclick="event.stopPropagation()">
-            <i class="fas fa-tools" style="font-size: 2.5rem; color: var(--glow); margin-bottom: 20px;"></i>
-            <h2 style="color: var(--glow); margin-bottom: 15px;">Site Updating!</h2>
-            <p style="color: #ccc; line-height: 1.6;">हम साइट को लगातार अपडेट करने में लगे हुए हैं, इसलिए थोड़ा टाइम लगेगा। जब तक आप हमारे साथ बने रहिए, जल्द ही अपडेट आएगा!</p>
+            <i class="fas fa-info-circle" style="font-size: 2.5rem; color: var(--glow); margin-bottom: 20px;"></i>
+            <h2 id="modalTitle" style="color: var(--glow); margin-bottom: 15px;"></h2>
+            <p id="modalDesc" style="color: #ccc; line-height: 1.6;"></p>
             <button onclick="closeModal()" style="margin-top:25px; padding:12px 35px; background:var(--glow); border:none; border-radius:50px; font-weight:bold; cursor:pointer; color: black;">Close</button>
         </div>
     </div>
@@ -151,16 +167,23 @@
     </footer>
 
     <script>
-        function openModal() { document.getElementById('menuModal').style.display = 'flex'; }
+        function openModal(title, desc) { 
+            document.getElementById('modalTitle').innerHTML = title;
+            document.getElementById('modalDesc').innerHTML = desc;
+            document.getElementById('menuModal').style.display = 'flex'; 
+        }
         function closeModal() { document.getElementById('menuModal').style.display = 'none'; }
+        
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
         }
+
         let count = 16332;
         setInterval(() => { count += Math.floor(Math.random() * 2) + 1; document.getElementById('visitor-count').innerText = count; }, 5000);
+
         const canvas = document.getElementById('canvas-stars');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -176,5 +199,3 @@
     </script>
 </body>
 </html>
-
-
