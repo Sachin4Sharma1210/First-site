@@ -8,64 +8,46 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root { --glow: #00d2ff; --bg: #010101; }
-        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Poppins', sans-serif; height: 100%; width: 100%; }
-        
+        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Poppins', sans-serif; overflow-x: hidden; height: 100%; }
         #canvas-stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); }
 
-        /* --- AUTH BOX DESIGN --- */
         .auth-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
-        .auth-box { background: rgba(15, 15, 15, 0.95); border: 2px solid var(--glow); padding: 30px; border-radius: 20px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 0 40px rgba(0, 210, 255, 0.15); box-sizing: border-box; }
-        .auth-box h2 { color: var(--glow); margin-top: 0; letter-spacing: 1px; }
-        .auth-box p { font-size: 0.85rem; color: #888; margin-bottom: 20px; }
+        .auth-box { background: rgba(10, 10, 10, 0.95); border: 2px solid var(--glow); padding: 30px; border-radius: 20px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 0 30px rgba(0, 210, 255, 0.2); }
+        .auth-box h2 { color: var(--glow); margin: 0 0 10px; font-size: 1.5rem; }
         
-        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 1rem; box-sizing: border-box; transition: 0.3s; }
-        input:focus { border-color: var(--glow); outline: none; box-shadow: 0 0 10px rgba(0, 210, 255, 0.3); }
+        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 1rem; box-sizing: border-box; outline: none; }
+        input:focus { border-color: var(--glow); }
 
-        .auth-btn { width: 100%; padding: 14px; background: var(--glow); border: none; border-radius: 12px; font-weight: bold; cursor: pointer; color: #000; margin-top: 10px; font-size: 1.1rem; transition: 0.3s; -webkit-tap-highlight-color: transparent; }
-        .auth-btn:active { transform: scale(0.95); background: #fff; }
+        .auth-btn { width: 100%; padding: 14px; background: var(--glow); border: none; border-radius: 12px; font-weight: bold; cursor: pointer; color: #000; margin-top: 10px; font-size: 1.1rem; transition: 0.3s; }
+        .auth-btn:active { transform: scale(0.95); }
+        .auth-btn.loading { opacity: 0.6; pointer-events: none; }
         
-        .auth-toggle { margin-top: 20px; color: #aaa; font-size: 0.9rem; cursor: pointer; user-select: none; }
+        .auth-toggle { margin-top: 20px; color: #aaa; font-size: 0.9rem; cursor: pointer; }
         .auth-toggle span { color: var(--glow); font-weight: bold; }
 
-        /* --- LOGOUT --- */
-        #logout-area { display: none; position: fixed; top: 15px; right: 15px; z-index: 2000; }
-        .logout-btn { background: #ff4b4b; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-
-        /* --- MAIN UI (HIDDEN) --- */
-        #main-content { display: none; text-align: center; padding-top: 80px; }
-        .batch-card { background: #0a0a0a; border: 1px solid #333; border-radius: 15px; padding: 20px; margin: 20px auto; width: 90%; max-width: 400px; border-left: 5px solid var(--glow); }
-
-        /* Loading Spinner */
-        .loading { opacity: 0.6; pointer-events: none; }
+        #main-content { display: none; padding-top: 80px; text-align: center; }
+        .batch-card { background: #0a0a0a; border: 1px solid #333; border-radius: 15px; padding: 20px; margin: 20px auto; width: 90%; max-width: 400px; border-left: 5px solid var(--glow); text-align: center; }
+        .buy-now { display: inline-block; margin-top: 15px; padding: 10px 25px; background: var(--glow); color: #000; border-radius: 50px; font-weight: bold; text-decoration: none; }
     </style>
 </head>
 <body>
 
     <canvas id="canvas-stars"></canvas>
 
-    <div id="logout-area">
-        <button class="logout-btn" onclick="logout()">LOGOUT</button>
-    </div>
-
     <div id="auth-container" class="auth-container">
         <div class="auth-box">
             <h2 id="title">🔐 लॉगिन</h2>
-            <p id="subtitle">अपना ईमेल और पासवर्ड डालें</p>
-            
             <div id="inputs">
-                <input type="email" id="email" placeholder="Email Address" autocomplete="email">
+                <input type="email" id="email" placeholder="Email Address">
                 <div id="reg-extra" style="display: none;">
-                    <input type="text" id="mobile" placeholder="Mobile Number" autocomplete="tel">
+                    <input type="text" id="mobile" placeholder="Mobile Number">
                 </div>
-                <input type="password" id="password" placeholder="Password" autocomplete="current-password">
-                
+                <input type="password" id="password" placeholder="Password">
                 <div id="otp-area" style="display: none;">
                     <input type="text" id="otp" placeholder="6-Digit OTP Code">
                 </div>
             </div>
-
             <button class="auth-btn" id="action-btn" onclick="processAuth()">प्रवेश करें</button>
-            
             <div class="auth-toggle" onclick="toggleMode()">
                 <span id="toggle-msg">नया अकाउंट बनाने के लिए <span>यहाँ क्लिक करें</span></span>
             </div>
@@ -75,26 +57,32 @@
     <div id="main-content">
         <h1 style="color:var(--glow)">स्वागत है, सचिन!</h1>
         <div class="batch-card">
+            <i class="fas fa-graduation-cap" style="font-size: 2.5rem; color: var(--glow); margin-bottom: 10px;"></i>
             <h3>SSC CGL Foundation</h3>
-            <p>स्टाफ सिलेक्शन कमीशन स्पेशल बैच</p>
-            <button class="auth-btn" style="width:auto; padding:10px 30px;">Buy Now</button>
+            <p>Staff Selection Commission Special Batch<br>Price: PhonePe Gift Card</p>
+            <a href="https://t.me/Avigat1210?start=buy_cgl" class="buy-now">Buy Now</a>
         </div>
-        <p style="color:#555">बाकी बैचेस जल्द ही यहाँ अपडेट होंगे...</p>
+        <button onclick="logout()" style="background:none; border:1px solid red; color:red; padding:10px 20px; border-radius:10px; cursor:pointer; margin-top:30px; font-weight:bold;">LOGOUT</button>
     </div>
 
     <script>
+        // ✅ CORRECTED API SETTINGS
         const SB_URL = "https://jnhkojxsckdgsvaagfhc.supabase.co";
-        const SB_KEY = "EyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpuaGtovanhzY2tkZ3N2YWFnZmhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0MDIxMDYsImV4cCI6MjA5NDk3ODEwNn0.hPBHq55bv9F0g9-mmgukyYZdZc-YM_Ye4B7IPsGdles";
+        const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpuaGtvanhzY2tkZ3N2YWFnZmhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0MDIxMDYsImV4cCI6MjA5NDk3ODEwNn0.hPBHq55bv9F0g9-mmgukyYZdZc-YM_Ye4B7IPsGdles";
         
-        let supabase;
-        try {
-            supabase = window.supabase.createClient(SB_URL, SB_KEY);
-        } catch(e) {
-            console.error("Supabase load failed");
-        }
-
+        let supabaseClient;
         let isLogin = true;
         let otpSent = false;
+
+        // Initialize Supabase
+        function init() {
+            if (window.supabase) {
+                supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
+                checkUser();
+            } else {
+                setTimeout(init, 500);
+            }
+        }
 
         function toggleMode() {
             isLogin = !isLogin;
@@ -107,67 +95,61 @@
         }
 
         async function processAuth() {
+            if (!supabaseClient) return;
+            
             const btn = document.getElementById('action-btn');
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
             const otp = document.getElementById('otp').value.trim();
 
             if(!email || !password) return alert("कृपया सभी जानकारी भरें!");
-
+            
+            btn.innerText = "Processing...";
             btn.classList.add('loading');
-            btn.innerText = "कृपया रुकें...";
 
-            if (isLogin) {
-                // LOGIN LOGIC
-                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-                if (error) {
-                    alert("लॉगिन फेल: " + error.message);
-                    btn.classList.remove('loading');
-                    btn.innerText = "प्रवेश करें";
-                } else {
+            try {
+                if (isLogin) {
+                    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                    if (error) throw error;
                     showApp();
-                }
-            } else {
-                // REGISTER LOGIC
-                if (!otpSent) {
-                    const { error } = await supabase.auth.signUp({ email, password });
-                    if (error) {
-                        alert("रजिस्ट्रेशन फेल: " + error.message);
-                        btn.classList.remove('loading');
-                    } else {
+                } else {
+                    if (!otpSent) {
+                        const { error } = await supabaseClient.auth.signUp({ email, password });
+                        if (error) throw error;
                         alert("OTP आपके ईमेल पर भेज दिया गया है!");
                         otpSent = true;
                         document.getElementById('otp-area').style.display = "block";
-                        btn.classList.remove('loading');
-                        btn.innerText = "OTP वेरिफाई करें";
-                    }
-                } else {
-                    const { error } = await supabase.auth.verifyOtp({ email, token: otp, type: 'signup' });
-                    if (error) {
-                        alert("गलत OTP! फिर से चेक करें।");
-                        btn.classList.remove('loading');
+                        btn.innerText = "Verify OTP";
                     } else {
+                        const { error } = await supabaseClient.auth.verifyOtp({ email, token: otp, type: 'signup' });
+                        if (error) throw error;
                         showApp();
                     }
                 }
+            } catch (err) {
+                alert("एरर: " + err.message);
+            } finally {
+                btn.classList.remove('loading');
+                if (!otpSent) btn.innerText = isLogin ? "प्रवेश करें" : "OTP भेजें";
             }
         }
 
-        async function showApp() {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-                document.getElementById('auth-container').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                document.getElementById('logout-area').style.display = 'block';
-            }
+        async function checkUser() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (user) showApp();
+        }
+
+        function showApp() {
+            document.getElementById('auth-container').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
         }
 
         async function logout() {
-            await supabase.auth.signOut();
+            await supabaseClient.auth.signOut();
             location.reload();
         }
 
-        // Star background logic
+        // Star animation
         const canvas = document.getElementById('canvas-stars');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -180,9 +162,7 @@
             requestAnimationFrame(draw);
         }
         draw();
-
-        // Check if user is already logged in
-        window.onload = showApp;
+        init();
     </script>
 </body>
 </html>
