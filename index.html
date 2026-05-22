@@ -13,20 +13,20 @@
 
         /* --- AUTH SECTION --- */
         .auth-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
-        .auth-box { background: rgba(10, 10, 10, 0.95); border: 2px solid var(--glow); padding: 30px; border-radius: 20px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 0 30px rgba(0, 210, 255, 0.2); }
+        .auth-box { background: rgba(10, 10, 10, 0.95); border: 2px solid var(--glow); padding: 30px; border-radius: 20px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 0 30px rgba(0, 210, 255, 0.2); z-index: 10; }
         .profile-img-auth { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--glow); margin-bottom: 15px; object-fit: cover; }
         input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 1rem; box-sizing: border-box; outline: none; }
         .auth-btn { width: 100%; padding: 14px; background: var(--glow); border: none; border-radius: 12px; font-weight: bold; cursor: pointer; color: #000; margin-top: 10px; font-size: 1.1rem; }
         .auth-toggle { margin-top: 20px; color: #aaa; font-size: 0.9rem; cursor: pointer; }
         .auth-toggle span { color: var(--glow); font-weight: bold; }
 
-        /* --- MAIN CONTENT UI --- */
+        /* --- DASHBOARD UI --- */
         #main-content { display: none; }
         nav { position: fixed; top: 0; width: 100%; padding: 15px 0; display: flex; justify-content: space-around; align-items: center; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 1000; }
         .logo { font-size: 1.1rem; color: var(--glow); font-weight: bold; }
 
         .hero { padding: 120px 20px 40px; text-align: center; }
-        .profile-ring { width: 140px; height: 140px; border-radius: 30px; padding: 5px; background: linear-gradient(45deg, var(--glow), transparent, #0051ff); animation: ringRotate 4s linear infinite; margin: 0 auto 20px; box-shadow: 0 0 25px rgba(0, 210, 255, 0.3); }
+        .profile-ring { width: 150px; height: 150px; border-radius: 30px; padding: 5px; background: linear-gradient(45deg, var(--glow), transparent, #0051ff); animation: ringRotate 4s linear infinite; margin: 0 auto 20px; box-shadow: 0 0 25px rgba(0, 210, 255, 0.3); }
         .profile-ring img { width: 100%; height: 100%; border-radius: 25px; object-fit: cover; }
         @keyframes ringRotate { 100% { filter: hue-rotate(360deg); } }
 
@@ -37,12 +37,11 @@
         .tab-content { display: none; width: 100%; max-width: 500px; margin: 0 auto; animation: fadeIn 0.5s ease; }
         .tab-content.active { display: block; }
 
-        /* --- MAGIC RAINBOW BUTTON --- */
+        /* --- MAGIC RAINBOW BUTTONS --- */
         .magic-btn { position: relative; padding: 20px; background: #000; color: #fff; text-decoration: none; border-radius: 15px; overflow: hidden; display: block; margin-bottom: 20px; transition: 0.3s; z-index: 1; border: none; cursor: pointer; width: 100%; box-sizing: border-box; }
         .rainbow-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 150%; height: 600%; background: conic-gradient(#ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000); animation: rotateBg 3s linear infinite; z-index: -1; }
         .magic-btn::after { content: ''; position: absolute; inset: 3px; background: #0a0a0a; border-radius: 12px; z-index: 0; }
         .btn-content { position: relative; z-index: 3; display: block; }
-        .btn-content i { font-size: 1.5rem; color: var(--glow); margin-bottom: 8px; }
 
         @keyframes rotateBg { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -59,17 +58,17 @@
         <div class="auth-box">
             <img src="https://files.catbox.moe/qik5aw.png" class="profile-img-auth">
             <h2 id="title">🔐 लॉगिन</h2>
-            <input type="email" id="email" placeholder="Email Address">
+            <input type="email" id="email" placeholder="ईमेल एड्रेस">
             <div id="reg-extra" style="display: none;">
-                <input type="text" id="mobile" placeholder="Mobile Number" maxlength="10">
+                <input type="text" id="mobile" placeholder="मोबाइल नंबर (10 अंक)" maxlength="10">
             </div>
-            <input type="password" id="password" placeholder="Password">
+            <input type="password" id="password" placeholder="पासवर्ड">
             <div id="otp-area" style="display: none;">
                 <input type="text" id="otp" placeholder="6-Digit OTP">
             </div>
             <button class="auth-btn" id="action-btn" onclick="processAuth()">प्रवेश करें</button>
             <div class="auth-toggle" onclick="toggleMode()">
-                <span id="toggle-msg">नया अकाउंट बनाने के लिए <span>यहाँ क्लिक करें</span></span>
+                <span id="toggle-msg">नया अकाउंट? <span>यहाँ क्लिक करें</span></span>
             </div>
         </div>
     </div>
@@ -77,35 +76,33 @@
     <div id="main-content">
         <nav>
             <div class="logo">➤ 𝕊𝔸ℂℍ𝕀ℕ 𝕊ℍ𝔸ℝ𝕄𝔸</div>
-            <button onclick="logout()" style="background:none; border:1px solid red; color:red; cursor:pointer; padding:5px 10px; border-radius:5px;">LOGOUT</button>
+            <button onclick="logout()" style="background:none; border:1px solid red; color:red; cursor:pointer; padding:5px 10px; border-radius:8px;">LOGOUT</button>
         </nav>
 
         <section class="hero">
             <div class="profile-ring"><img src="https://files.catbox.moe/qik5aw.png"></div>
-            <h1>नमस्ते! मैं सचिन शर्मा</h1>
+            <h1>नमस्कार, सचिन भाई!</h1>
             <p style="color: var(--glow); font-weight: bold;">(Web Developer - SACHIN SHARMA)</p>
 
             <div class="tab-header">
                 <button class="tab-btn active" onclick="switchTab('our-batches', this)">OUR BATCHES</button>
-                <button class="tab-btn" onclick="switchTab('upcoming', this)">UPCOMING BATCH</button>
+                <button class="tab-btn" onclick="switchTab('upcoming', this)">UPCOMING</button>
             </div>
 
             <div id="our-batches" class="tab-content active">
-                <p style="color:#444;">बैचेस लोड हो रहे हैं...</p>
-            </div>
+                </div>
 
             <div id="upcoming" class="tab-content">
                 <div style="background: rgba(255,255,255,0.05); padding: 40px 20px; border-radius: 20px;">
-                    <i class="fas fa-hourglass-half" style="font-size: 2rem; color: var(--glow);"></i>
-                    <h3>Coming Soon!</h3>
+                    <p>जल्द ही नए अपडेट आएंगे!</p>
                 </div>
             </div>
         </section>
 
         <footer class="footer">
-            <p style="color:var(--glow); margin:0;">अब तक कुल आगंतुक</p>
+            <p style="color:var(--glow); margin:0;">कुल आगंतुक</p>
             <div class="counter-num" id="visitor-count">16332</div>
-            <p style="color:#555; font-size:0.8rem;">© 2026 SACHIN SHARMA</p>
+            <p style="color:#444; font-size:0.8rem;">© 2026 SACHIN SHARMA</p>
         </footer>
     </div>
 
@@ -119,48 +116,61 @@
 
         function toggleMode() {
             isLogin = !isLogin;
+            otpSent = false;
             document.getElementById('title').innerText = isLogin ? "🔐 लॉगिन" : "📝 रजिस्ट्रेशन";
             document.getElementById('reg-extra').style.display = isLogin ? "none" : "block";
+            document.getElementById('otp-area').style.display = "none";
             document.getElementById('action-btn').innerText = isLogin ? "प्रवेश करें" : "OTP भेजें";
         }
 
         async function processAuth() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            if(!email || !password) return alert("Fill data!");
+            const btn = document.getElementById('action-btn');
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const mobile = document.getElementById('mobile').value.trim();
+            const otp = document.getElementById('otp').value.trim();
 
-            if(isLogin) {
-                const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if(error) alert(error.message); else showApp();
-            } else {
-                // रजिस्ट्रेशन logic यहाँ आएगा (OTP वाला)
-                alert("रजिस्ट्रेशन प्रोसेस शुरू...");
-            }
+            if(!email || !password) return alert("विवरण भरें!");
+            btn.innerText = "प्रतीक्षा करें...";
+
+            try {
+                if (isLogin) {
+                    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                    if (error) throw error;
+                    showApp();
+                } else {
+                    if (!otpSent) {
+                        if(mobile.length !== 10) throw new Error("10 अंकों का नंबर लिखें!");
+                        const { error } = await supabaseClient.auth.signInWithOtp({ 
+                            email, options: { shouldCreateUser: true, data: { phone: mobile } }
+                        });
+                        if (error) throw error;
+                        alert("OTP ईमेल पर भेजा गया!");
+                        otpSent = true;
+                        document.getElementById('otp-area').style.display = "block";
+                        btn.innerText = "OTP वेरिफाई करें";
+                    } else {
+                        const { error } = await supabaseClient.auth.verifyOtp({ email, token: otp, type: 'email' });
+                        if (error) throw error;
+                        showApp();
+                    }
+                }
+            } catch (err) { alert(err.message); }
+            finally { if(!otpSent) btn.innerText = isLogin ? "प्रवेश करें" : "OTP भेजें"; }
         }
 
-        // 🎯 डेटाबेस से बैचेस लोड करने का फंक्शन
         async function loadBatches() {
-            const { data: batches, error } = await supabaseClient
-                .from('batches')
-                .select('*')
-                .order('created_at', { ascending: false });
-
+            const { data: batches } = await supabaseClient.from('batches').select('*').order('created_at', { ascending: false });
             const container = document.getElementById('our-batches');
             if (batches && batches.length > 0) {
-                container.innerHTML = ""; 
+                container.innerHTML = "";
                 batches.forEach(b => {
                     container.innerHTML += `
                         <a href="${b.link}" target="_blank" class="magic-btn">
-                            <span class="btn-content">
-                                <i class="fas fa-graduation-cap"></i><br>
-                                ${b.name}<br>
-                                <small>${b.description}</small>
-                            </span>
+                            <span class="btn-content"><b>${b.name}</b><br><small>${b.description}</small></span>
                             <div class="rainbow-glow"></div>
                         </a>`;
                 });
-            } else {
-                container.innerHTML = "<p>कोई बैच नहीं मिला।</p>";
             }
         }
 
@@ -174,20 +184,19 @@
         }
 
         function logout() { supabaseClient.auth.signOut().then(() => location.reload()); }
-        function switchTab(id, b) {
+        function switchTab(id, btn) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
 
-        // Star Background
         const canvas = document.getElementById('canvas-stars');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         let stars = [];
-        for(let i=0; i<100; i++) stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*2});
+        for(let i=0; i<80; i++) stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*2});
         function draw() {
             ctx.clearRect(0,0,canvas.width, canvas.height); ctx.fillStyle="white";
-            stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x, s.y, s.s, 0, 7); ctx.fill(); s.y+=0.2; if(s.y>canvas.height) s.y=0; });
+            stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x, s.y, s.s, 0, 7); ctx.fill(); s.y+=0.3; if(s.y>canvas.height) s.y=0; });
             requestAnimationFrame(draw);
         }
         draw();
