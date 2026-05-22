@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>➤ 𝕊𝔸ℂℍ𝕀ℕ 𝕊ℍ𝔸ℝ𝕄𝔸 | Professional Platform</title>
+    <title>➤ 𝕊𝔸ℂℍ𝕀ℕ 𝕊ℍ𝔸ℝ𝕄𝔸 | Premium Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -13,20 +13,16 @@
 
         .auth-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
         .auth-box { background: rgba(10, 10, 10, 0.95); border: 2px solid var(--glow); padding: 30px; border-radius: 20px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 0 30px rgba(0, 210, 255, 0.2); }
-        .auth-box h2 { color: var(--glow); margin: 0 0 10px; font-size: 1.5rem; }
         
-        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 1rem; box-sizing: border-box; outline: none; }
-        input:focus { border-color: var(--glow); }
+        .guide-video { width: 100%; border-radius: 12px; border: 1px solid var(--glow); margin-bottom: 15px; display: none; } /* वीडियो लिंक मिलने पर इसे block कर सकते हैं */
 
-        .auth-btn { width: 100%; padding: 14px; background: var(--glow); border: none; border-radius: 12px; font-weight: bold; cursor: pointer; color: #000; margin-top: 10px; font-size: 1.1rem; transition: 0.3s; }
-        .auth-btn:active { transform: scale(0.95); }
-        .auth-btn.loading { opacity: 0.6; pointer-events: none; }
-        
+        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-size: 1rem; box-sizing: border-box; outline: none; }
+        .auth-btn { width: 100%; padding: 14px; background: var(--glow); border: none; border-radius: 12px; font-weight: bold; cursor: pointer; color: #000; margin-top: 10px; font-size: 1.1rem; }
         .auth-toggle { margin-top: 20px; color: #aaa; font-size: 0.9rem; cursor: pointer; }
         .auth-toggle span { color: var(--glow); font-weight: bold; }
 
         #main-content { display: none; padding-top: 80px; text-align: center; }
-        .batch-card { background: #0a0a0a; border: 1px solid #333; border-radius: 15px; padding: 20px; margin: 20px auto; width: 90%; max-width: 400px; border-left: 5px solid var(--glow); text-align: center; }
+        .batch-card { background: #0a0a0a; border: 1px solid #333; border-radius: 15px; padding: 20px; margin: 20px auto; width: 90%; max-width: 400px; border-left: 5px solid var(--glow); }
         .buy-now { display: inline-block; margin-top: 15px; padding: 10px 25px; background: var(--glow); color: #000; border-radius: 50px; font-weight: bold; text-decoration: none; }
     </style>
 </head>
@@ -35,17 +31,19 @@
     <canvas id="canvas-stars"></canvas>
 
     <div id="auth-container" class="auth-container">
+        <video id="login-guide" class="guide-video" controls>
+            <source src="YOUR_VIDEO_URL_HERE.mp4" type="video/mp4">
+        </video>
+
         <div class="auth-box">
             <h2 id="title">🔐 लॉगिन</h2>
-            <div id="inputs">
-                <input type="email" id="email" placeholder="Email Address">
-                <div id="reg-extra" style="display: none;">
-                    <input type="text" id="mobile" placeholder="Mobile Number">
-                </div>
-                <input type="password" id="password" placeholder="Password">
-                <div id="otp-area" style="display: none;">
-                    <input type="text" id="otp" placeholder="6-Digit OTP Code">
-                </div>
+            <input type="email" id="email" placeholder="Email Address">
+            <div id="reg-extra" style="display: none;">
+                <input type="text" id="mobile" placeholder="Mobile Number">
+            </div>
+            <input type="password" id="password" placeholder="Password">
+            <div id="otp-area" style="display: none;">
+                <input type="text" id="otp" placeholder="6-Digit OTP">
             </div>
             <button class="auth-btn" id="action-btn" onclick="processAuth()">प्रवेश करें</button>
             <div class="auth-toggle" onclick="toggleMode()">
@@ -55,34 +53,24 @@
     </div>
 
     <div id="main-content">
-        <h1 style="color:var(--glow)">स्वागत है, सचिन!</h1>
-        <div class="batch-card">
-            <i class="fas fa-graduation-cap" style="font-size: 2.5rem; color: var(--glow); margin-bottom: 10px;"></i>
-            <h3>SSC CGL Foundation</h3>
-            <p>Staff Selection Commission Special Batch<br>Price: PhonePe Gift Card</p>
-            <a href="https://t.me/Avigat1210?start=buy_cgl" class="buy-now">Buy Now</a>
+        <h1 style="color:var(--glow)">नमस्कार, सचिन भाई!</h1>
+        <div class="batch-grid">
+            <div class="batch-card">
+                <h3>SSC CGL Foundation</h3>
+                <p>प्राइस: PhonePe गिफ्ट कार्ड<br>वैलिडिटी: लाइफटाइम</p>
+                <a href="https://t.me/Avigat1210?start=buy_cgl" class="buy-now">Buy Now</a>
+            </div>
         </div>
-        <button onclick="logout()" style="background:none; border:1px solid red; color:red; padding:10px 20px; border-radius:10px; cursor:pointer; margin-top:30px; font-weight:bold;">LOGOUT</button>
+        <button onclick="logout()" style="background:none; border:1px solid red; color:red; padding:10px; border-radius:10px; cursor:pointer; margin-top:20px;">LOGOUT</button>
     </div>
 
     <script>
-        // ✅ CORRECTED API SETTINGS
         const SB_URL = "https://jnhkojxsckdgsvaagfhc.supabase.co";
         const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpuaGtvanhzY2tkZ3N2YWFnZmhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0MDIxMDYsImV4cCI6MjA5NDk3ODEwNn0.hPBHq55bv9F0g9-mmgukyYZdZc-YM_Ye4B7IPsGdles";
         
-        let supabaseClient;
+        const supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
         let isLogin = true;
         let otpSent = false;
-
-        // Initialize Supabase
-        function init() {
-            if (window.supabase) {
-                supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
-                checkUser();
-            } else {
-                setTimeout(init, 500);
-            }
-        }
 
         function toggleMode() {
             isLogin = !isLogin;
@@ -95,17 +83,13 @@
         }
 
         async function processAuth() {
-            if (!supabaseClient) return;
-            
             const btn = document.getElementById('action-btn');
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
             const otp = document.getElementById('otp').value.trim();
 
-            if(!email || !password) return alert("कृपया सभी जानकारी भरें!");
-            
-            btn.innerText = "Processing...";
-            btn.classList.add('loading');
+            if(!email || !password) return alert("जानकारी भरें!");
+            btn.innerText = "प्रतीक्षा करें...";
 
             try {
                 if (isLogin) {
@@ -114,47 +98,44 @@
                     showApp();
                 } else {
                     if (!otpSent) {
-                        const { error } = await supabaseClient.auth.signUp({ email, password });
+                        // Registration with OTP logic
+                        const { error } = await supabaseClient.auth.signInWithOtp({ 
+                            email,
+                            options: { shouldCreateUser: true }
+                        });
                         if (error) throw error;
-                        alert("OTP आपके ईमेल पर भेज दिया गया है!");
+                        alert("OTP आपके ईमेल पर भेज दिया गया है। स्पैम फोल्डर भी चेक करें।");
                         otpSent = true;
                         document.getElementById('otp-area').style.display = "block";
                         btn.innerText = "Verify OTP";
                     } else {
-                        const { error } = await supabaseClient.auth.verifyOtp({ email, token: otp, type: 'signup' });
+                        const { error } = await supabaseClient.auth.verifyOtp({ email, token: otp, type: 'email' });
                         if (error) throw error;
                         showApp();
                     }
                 }
             } catch (err) {
-                alert("एरर: " + err.message);
-            } finally {
-                btn.classList.remove('loading');
-                if (!otpSent) btn.innerText = isLogin ? "प्रवेश करें" : "OTP भेजें";
+                alert("सूचना: " + err.message);
+                btn.innerText = isLogin ? "प्रवेश करें" : "OTP भेजें";
             }
         }
 
-        async function checkUser() {
+        async function showApp() {
             const { data: { user } } = await supabaseClient.auth.getUser();
-            if (user) showApp();
+            if (user) {
+                document.getElementById('auth-container').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            }
         }
 
-        function showApp() {
-            document.getElementById('auth-container').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
-        }
+        function logout() { supabaseClient.auth.signOut(); location.reload(); }
 
-        async function logout() {
-            await supabaseClient.auth.signOut();
-            location.reload();
-        }
-
-        // Star animation
+        // Star logic
         const canvas = document.getElementById('canvas-stars');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         let stars = [];
-        for(let i=0; i<100; i++) stars.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: Math.random()*1.5, speed: Math.random()*0.2});
+        for(let i=0; i<80; i++) stars.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: Math.random()*1.5, speed: Math.random()*0.2});
         function draw() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
             ctx.fillStyle = "white";
@@ -162,7 +143,7 @@
             requestAnimationFrame(draw);
         }
         draw();
-        init();
+        window.onload = showApp;
     </script>
 </body>
 </html>
