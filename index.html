@@ -12,10 +12,9 @@
         /* --- AUTH SECTION --- */
         .auth-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
         .auth-box { background: rgba(10, 10, 10, 0.95); border: 2px solid var(--glow); padding: 30px; border-radius: 20px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 0 30px rgba(0, 210, 255, 0.2); }
-        .profile-img-auth { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--glow); margin-bottom: 15px; object-fit: cover; }
+        .profile-img-auth { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--glow); margin-bottom: 15px; object-fit: cover; }
         input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; box-sizing: border-box; outline: none; }
         .auth-btn { width: 100%; padding: 14px; background: var(--glow); border: none; border-radius: 12px; font-weight: bold; cursor: pointer; color: #000; font-size: 1.1rem; transition: 0.3s; }
-        .auth-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--glow); }
 
         /* --- DASHBOARD --- */
         #main-content { display: none; padding-top: 80px; text-align: center; width: 100%; }
@@ -24,15 +23,13 @@
         /* COLORFUL CARDS (All Batches) */
         .demo-card { 
             background: linear-gradient(145deg, #1a1a1a, #000); 
-            border: 2px solid var(--glow); 
-            border-radius: 20px; 
-            margin: 20px auto; 
-            max-width: 340px; 
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
+            border: 2px solid var(--glow); border-radius: 20px; margin: 20px auto; max-width: 340px; overflow: hidden; box-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
         }
-        .demo-card img { width: 100%; height: 200px; object-fit: cover; border-bottom: 2px solid var(--glow); }
-        .card-body { padding: 20px; text-align: left; }
+        .demo-card img { width: 100%; height: 180px; object-fit: cover; border-bottom: 2px solid var(--glow); }
+        .card-body { padding: 15px; text-align: left; }
+
+        /* PAYMENT BOX */
+        .payment-info { background: rgba(255, 255, 255, 0.05); border: 1px dashed var(--glow); padding: 10px; border-radius: 10px; margin: 10px 0; font-size: 0.8rem; line-height: 1.4; color: #eee; }
 
         /* RAINBOW BUTTONS (Our Batches) */
         .magic-btn { 
@@ -61,10 +58,7 @@
     </div>
 
     <div id="main-content">
-        <nav>
-            <div style="color:var(--glow); font-weight:bold;">➤ 𝕊𝔸ℂℍ𝕀ℕ 𝕊ℍ𝔸ℝ𝕄𝔸</div>
-            <button onclick="logout()" style="color:red; background:none; border:1px solid red; padding:5px 10px; border-radius:5px; cursor:pointer;">LOGOUT</button>
-        </nav>
+        <nav><div style="color:var(--glow); font-weight:bold;">➤ 𝕊𝔸ℂℍ𝕀ℕ 𝕊ℍ𝔸ℝ𝕄𝔸</div><button onclick="logout()" style="color:red; background:none; border:1px solid red; padding:5px 10px; border-radius:5px; cursor:pointer;">LOGOUT</button></nav>
 
         <div id="home-menu">
             <div class="magic-btn" style="background: #111; border: 2px solid var(--glow);" onclick="showSection('section-our')">📖 OUR BATCHES</div>
@@ -91,7 +85,6 @@
 
         let isLogin = true, otpSent = false;
 
-        // --- SESSION MANAGEMENT ---
         supabaseClient.auth.onAuthStateChange((event, session) => {
             if (session) {
                 document.getElementById('auth-container').style.display = 'none';
@@ -107,7 +100,6 @@
             isLogin = !isLogin;
             document.getElementById('title').innerText = isLogin ? "🔐 लॉगिन" : "📝 रजिस्ट्रेशन";
             document.getElementById('action-btn').innerText = isLogin ? "प्रवेश करें" : "OTP भेजें";
-            document.getElementById('toggle-p').innerText = isLogin ? "अकाउंट है? लॉगिन करें" : "नया अकाउंट? रजिस्टर करें";
             document.getElementById('reg-extra').style.display = isLogin ? 'none' : 'block';
         }
 
@@ -120,22 +112,19 @@
                 } else {
                     if (!otpSent) {
                         const { error } = await supabaseClient.auth.signInWithOtp({ email, options: { data: { phone: mobile } } });
-                        if (error) throw error; alert("ओटीपी आपके ईमेल पर भेजा गया है!"); 
+                        if (error) throw error; alert("ओटीपी भेजा गया!"); 
                         otpSent = true; document.getElementById('otp-area').style.display = "block";
-                        document.getElementById('action-btn').innerText = "OTP वेरिफाई करें";
                     } else {
                         const { error } = await supabaseClient.auth.verifyOtp({ email, token: otp, type: 'email' });
                         if (error) throw error;
                     }
                 }
-            } catch(e) { alert("सूचना: " + e.message); }
+            } catch(e) { alert(e.message); }
         }
 
-        // --- DATA LOADING ---
         async function loadData() {
             const { data: n } = await supabaseClient.from('batches').select('*');
             const { data: d } = await supabaseClient.from('demo_batches').select('*');
-            
             const nL = document.getElementById('our-batches-list'), dL = document.getElementById('all-batches-list');
             nL.innerHTML = ""; dL.innerHTML = "";
 
@@ -145,15 +134,21 @@
                         <img src="${b.thumbnail}">
                         <div class="card-body">
                             <h3 style="color:var(--glow); margin:0;">${b.name}</h3>
-                            <p style="color:#888; font-size:0.9rem;">वैधता: 1 साल</p>
-                            <h2 style="color:#0f0; margin:10px 0;">₹${b.offer_price}</h2>
-                            <a href="https://t.me/Avigat1210?text=नमस्ते, मैंने ${b.name} खरीदा है।" target="_blank" style="display:block; background:#0088cc; color:white; padding:12px; border-radius:10px; text-decoration:none; font-weight:bold; text-align:center;">🛒 SEND SCREENSHOT</a>
+                            <div class="payment-info">
+                                <b>💳 पेमेंट कैसे करें:</b><br>
+                                1. नीचे 🎁 बटन से गिफ्ट कार्ड लें।<br>
+                                2. Buy New Card चुनें और ₹${b.offer_price} पे करें।<br>
+                                3. स्क्रीनशॉट मुझे भेजें।
+                            </div>
+                            <a href="https://phon.pe/4fjyavab" target="_blank" style="display:block; background:#5f259f; color:white; padding:10px; border-radius:10px; text-decoration:none; font-weight:bold; text-align:center; margin-bottom:10px;">🎁 BUY PHONEPE GIFT CARD</a>
+                            <h2 style="color:#0f0; margin:10px 0; text-align:center;">₹${b.offer_price}</h2>
+                            <a href="https://t.me/Avigat1210?text=नमस्ते सचिन सर, मैंने ${b.name} के लिए पेमेंट कर दिया है।" target="_blank" style="display:block; background:#00ff00; color:black; padding:12px; border-radius:10px; text-decoration:none; font-weight:bold; text-align:center;">🛒 SEND SCREENSHOT</a>
                         </div>
                     </div>`;
             });
 
             if(n) n.forEach(b => {
-                nL.innerHTML += `<a href="${b.link}" class="magic-btn">${b.name}<br><small style="font-weight:normal; opacity:0.8;">${b.description}</small></a>`;
+                nL.innerHTML += `<a href="${b.link}" class="magic-btn">${b.name}<br><small style="font-weight:normal;">${b.description}</small></a>`;
             });
         }
 
