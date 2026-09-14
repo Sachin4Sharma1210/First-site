@@ -3,90 +3,387 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>➤ 𝕊𝔸ℂℍ𝕀ℕ 𝕊ℍ𝔸ℝ𝕄𝔸 | Official</title>
+    <title>➤ 𝚾 𝚫 𝚬 𝚸 · ༎🥀 | Official</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --glow: #00d2ff; --bg: #030303; --pink: #ff007f; --green: #00ff00; --yellow: #ffdf00; }
-        body { margin: 0; background: var(--bg); color: white; font-family: 'Poppins', sans-serif; overflow-x: hidden; text-align: center; }
-        
-        /* 🚀 वेलकम हेडर */
-        .header { padding: 60px 20px 30px; background: radial-gradient(circle at top, #111, #030303); border-bottom: 2px solid #222; }
-        .header img { width: 100px; border-radius: 50%; border: 3px solid var(--glow); box-shadow: 0 0 20px var(--glow); margin-bottom: 15px; }
-        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; margin: 10px 0; color: var(--glow); }
-
-        /* 🔘 मुख्य मेनू (App Like Navigation) */
-        #menu-screen { padding: 20px; }
-        .welcome-text { color: #aaa; font-size: 0.95rem; line-height: 1.6; max-width: 500px; margin: 0 auto 30px; }
-        .nav-btn { 
-            display: block; width: 85%; max-width: 320px; margin: 15px auto; padding: 20px;
-            background: #111; border: 1px solid var(--glow); color: var(--glow);
-            border-radius: 20px; text-decoration: none; font-weight: bold; font-size: 1.1rem;
-            box-shadow: 0 0 15px rgba(0, 210, 255, 0.1); cursor: pointer; transition: 0.3s;
+        :root { 
+            --glow: #00d2ff; 
+            --bg: #07090e; 
+            --card-bg: rgba(16, 20, 31, 0.85);
+            --card-border: rgba(0, 210, 255, 0.15);
+            --pink: #ff007f; 
+            --green: #00ff88; 
+            --yellow: #ffdf00; 
+            --purple: #7928ca;
         }
-        .nav-btn:active { transform: scale(0.95); }
 
-        /* 📱 कंटेंट एरिया */
-        #content-area { display: none; padding: 20px 10px; }
-        .back-btn { background: #222; color: #fff; border: 1px solid #444; padding: 12px 30px; border-radius: 30px; cursor: pointer; margin-bottom: 30px; font-weight: bold; }
-        .section-header { color: var(--yellow); font-family: 'Orbitron'; margin-bottom: 30px; letter-spacing: 2px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        /* 🏷️ पिंक ऑफर टैग (NaN फिक्स के साथ) */
+        body { 
+            background: var(--bg); 
+            background-image: radial-gradient(circle at 50% 0%, #151c2e 0%, #07090e 70%);
+            color: white; 
+            font-family: 'Poppins', sans-serif; 
+            overflow-x: hidden; 
+            text-align: center; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 🚀 हेडर */
+        .header { 
+            padding: 45px 20px 25px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+            background: rgba(7, 9, 14, 0.6);
+            backdrop-filter: blur(12px);
+        }
+        .header img { 
+            width: 105px; 
+            height: 105px;
+            border-radius: 50%; 
+            border: 3px solid var(--glow); 
+            box-shadow: 0 0 30px rgba(0, 210, 255, 0.45); 
+            margin-bottom: 14px; 
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .header img:hover {
+            transform: scale(1.05) rotate(3deg);
+        }
+        .header h1 { 
+            font-family: 'Poppins', sans-serif; 
+            font-size: 1.7rem; 
+            font-weight: 700;
+            margin: 6px 0; 
+            color: #ffffff; 
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 15px rgba(0, 210, 255, 0.6);
+        }
+        .header p {
+            color: #8fa0bc;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* 🔍 सर्च & फ़िल्टर बार */
+        .control-panel {
+            max-width: 550px;
+            margin: 25px auto 10px;
+            padding: 0 20px;
+            width: 100%;
+        }
+        .search-box {
+            width: 100%;
+            padding: 14px 22px;
+            background: rgba(16, 22, 36, 0.9);
+            border: 1.5px solid #23304a;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .search-box:focus {
+            border-color: var(--glow);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.35);
+            background: #131b2e;
+        }
+
+        /* 🏷️ फ़िल्टर चिप्स */
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 18px 0 30px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: rgba(18, 24, 38, 0.9);
+            border: 1px solid #253350;
+            color: #9aa9c3;
+            padding: 8px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tab-btn:hover {
+            color: #fff;
+            border-color: var(--glow);
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--glow), #0072ff);
+            color: #000;
+            font-weight: 700;
+            box-shadow: 0 0 16px rgba(0, 210, 255, 0.45);
+            border-color: transparent;
+        }
+
+        /* 🔘 मुख्य कंटेनर */
+        .main-container {
+            max-width: 960px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 10px 20px 60px;
+            flex: 1;
+        }
+
+        .section-header { 
+            color: var(--yellow); 
+            font-family: 'Orbitron', sans-serif; 
+            margin: 35px 0 22px; 
+            letter-spacing: 1.5px; 
+            font-size: 1.25rem;
+            text-align: left;
+            border-left: 4px solid var(--yellow);
+            padding-left: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 🖼️ प्रीमियम कार्ड्स ग्रिड */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 24px;
+            margin-bottom: 35px;
+        }
+        .demo-card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--card-border); 
+            border-radius: 20px; 
+            overflow: hidden; 
+            position: relative; 
+            text-align: left;
+            transition: all 0.35s ease;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+        }
+        .demo-card:hover {
+            border-color: var(--glow);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 35px rgba(0, 210, 255, 0.2);
+        }
+        .card-thumb-wrap {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            background: #0a0d14;
+        }
+        .demo-card img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            display: block; 
+            transition: transform 0.5s ease;
+        }
+        .demo-card:hover img {
+            transform: scale(1.06);
+        }
+        .card-body { 
+            padding: 18px; 
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
         .discount-badge {
-            position: absolute; top: 12px; left: 12px; background: var(--pink); color: white;
-            padding: 5px 12px; border-radius: 8px; font-weight: 900; font-size: 0.85rem; z-index: 10;
+            position: absolute; 
+            top: 14px; 
+            left: 14px; 
+            background: linear-gradient(135deg, var(--pink), #ff0044); 
+            color: white;
+            padding: 5px 12px; 
+            border-radius: 8px; 
+            font-weight: 800; 
+            font-size: 0.8rem; 
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.5);
+            letter-spacing: 0.5px;
         }
 
-        /* 🖼️ पोस्टर कार्ड्स */
-        .demo-card { background: #000; border: 2px solid var(--glow); border-radius: 20px; margin: 25px auto; max-width: 350px; overflow: hidden; position: relative; }
-        .demo-card img { width: 100%; height: auto; display: block; }
-        .card-body { padding: 15px; text-align: left; }
+        .card-title {
+            color: #ffffff;
+            font-size: 1.12rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.45;
+            min-height: 48px;
+        }
         
-        .payment-box { border: 1px dashed var(--glow); border-radius: 12px; padding: 12px; margin: 15px 0; font-size: 0.85rem; background: rgba(255,255,255,0.02); }
-        .gift-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: #5f259f; color: white; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: bold; margin-bottom: 10px; }
-        .ss-btn { display: block; background: var(--green); color: black; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: 900; text-align: center; }
+        .payment-box { 
+            border: 1px dashed rgba(255, 255, 255, 0.18); 
+            border-radius: 12px; 
+            padding: 12px; 
+            margin: 10px 0 14px; 
+            font-size: 0.82rem; 
+            background: rgba(255, 255, 255, 0.02); 
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+        .gift-btn { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            background: linear-gradient(135deg, #6c24be, #4a1586); 
+            color: white; 
+            padding: 11px; 
+            border-radius: 10px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 0.85rem;
+            margin-bottom: 12px; 
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(108, 36, 190, 0.35);
+        }
+        .gift-btn:hover {
+            filter: brightness(1.15);
+            transform: translateY(-2px);
+        }
+        .ss-btn { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: linear-gradient(135deg, var(--green), #00c968); 
+            color: #03140a; 
+            padding: 12px; 
+            border-radius: 10px; 
+            text-decoration: none; 
+            font-weight: 800; 
+            text-align: center; 
+            font-size: 0.92rem;
+            margin-top: auto;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.35);
+        }
+        .ss-btn:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.6);
+            transform: translateY(-2px);
+        }
         
-        .price-box { display: flex; align-items: baseline; gap: 10px; margin: 10px 0; justify-content: center; }
-        .old-p { text-decoration: line-through; color: #666; font-size: 1.1rem; }
-        .new-p { color: var(--green); font-size: 2rem; font-weight: 800; font-family: 'Orbitron'; }
+        .price-box { 
+            display: flex; 
+            align-items: baseline; 
+            gap: 10px; 
+            margin: 8px 0 14px; 
+            justify-content: center; 
+        }
+        .old-p { text-decoration: line-through; color: #718096; font-size: 1.05rem; }
+        .new-p { 
+            color: var(--green); 
+            font-size: 1.8rem; 
+            font-weight: 900; 
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
 
-        /* ⚠️ सख्त पेमेंट नोट */
-        .price-note { background: rgba(255, 0, 0, 0.1); border-left: 4px solid red; color: #ff9999; padding: 12px; margin: 0 auto 30px; max-width: 350px; font-size: 0.8rem; text-align: left; }
-        
-        /* 📖 साधारण लिंक्स */
-        .magic-link { background: #111; border: 1px solid var(--glow); color: var(--glow); padding: 20px; border-radius: 15px; display: block; margin: 15px auto; width: 90%; text-decoration: none; font-weight: 600; }
+        /* 📖 HTML लिंक्स लिस्ट */
+        .html-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .magic-link { 
+            background: var(--card-bg); 
+            border: 1px solid var(--card-border); 
+            color: var(--glow); 
+            padding: 16px 22px; 
+            border-radius: 14px; 
+            display: flex; 
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        .magic-link:hover {
+            border-color: var(--glow);
+            background: rgba(19, 27, 45, 0.95);
+            transform: translateX(8px);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.25);
+        }
+
+        .empty-msg {
+            color: #718096;
+            padding: 50px 20px;
+            font-size: 1.05rem;
+        }
+
+        /* 🛡️ फ़ूटर */
+        .footer {
+            margin-top: auto;
+            padding: 30px 20px;
+            background: #05070a;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            color: #718096;
+            font-size: 0.88rem;
+            line-height: 1.8;
+        }
+        .footer .brand {
+            color: var(--glow);
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <img src="https://files.catbox.moe/qik5aw.png">
-        <h1>𝕊𝔸ℂℍ𝕀ℕ 𝕊ℍ𝔸ℝ𝕄𝔸</h1>
+        <img src="https://files.catbox.moe/qik5aw.png" alt="Profile">
+        <h1>𝚾 𝚫 𝚬 𝚸 · ༎🥀</h1>
+        <p>Official Digital Portal</p>
     </div>
 
-    <div id="menu-screen">
-        <p class="welcome-text">नमस्ते! आपकी सुविधा के लिए हमने इस प्लेटफॉर्म को डिजाइन किया है। यहाँ हमारी <b>HTML Files</b> और सभी <b>Premium Courses</b> की पूरी जानकारी उपलब्ध है।</p>
+    <!-- 🔍 सर्च और फ़िल्टर बार -->
+    <div class="control-panel">
+        <input type="text" id="searchInput" class="search-box" placeholder="🔍 कोर्स या HTML फाइल सर्च करें..." oninput="filterContent()">
         
-        <div class="nav-btn" onclick="openSection('our')">📖 OUR BATCHES</div>
-        <div class="nav-btn" onclick="openSection('all')">🌟 ALL BATCHES</div>
-        
-        <div class="price-note" style="margin-top:40px;">
-            <b>📢 नोट:</b> पेमेंट में ₹1 की भी कमी स्वीकार्य नहीं होगी। ऑफर्स के लिए समय-समय पर चेक करते रहें।
+        <div class="filter-tabs">
+            <button class="tab-btn active" onclick="setFilter('all', this)">सब कुछ (All)</button>
+            <button class="tab-btn" onclick="setFilter('premium', this)">🔥 Premium Batches</button>
+            <button class="tab-btn" onclick="setFilter('html', this)">📖 Free HTML Files</button>
         </div>
     </div>
 
-    <div id="content-area">
-        <button class="back-btn" onclick="showMenu()">⬅️ BACK TO MENU</button>
-        
-        <div id="our-container" style="display:none;">
-            <h3 class="section-header">📖 OUR HTML FILES</h3>
-            <div id="our-batches-list"></div>
-        </div>
-
-        <div id="all-container" style="display:none;">
+    <div class="main-container">
+        <!-- 🔥 प्रीमियम बैचेस सेक्शन -->
+        <div id="premiumSection">
             <h3 class="section-header">🔥 PREMIUM BATCHES</h3>
-            <div id="all-batches-list"></div>
+            <div class="cards-grid" id="all-batches-list"></div>
         </div>
+
+        <!-- 📖 HTML फाइल्स सेक्शन -->
+        <div id="htmlSection">
+            <h3 class="section-header">📖 OUR HTML FILES</h3>
+            <div class="html-list" id="our-batches-list"></div>
+        </div>
+
+        <div id="noResults" class="empty-msg" style="display:none;">
+            ❌ कोई परिणाम नहीं मिला। कृपया दूसरा नाम लिखकर देखें।
+        </div>
+    </div>
+
+    <!-- 🛡️ फ़ूटर व कॉपीराइट -->
+    <div class="footer">
+        <p>© 2026 <span class="brand">𝚾 𝚫 𝚬 𝚸 · ༎🥀</span> | All Rights Reserved</p>
+        <p style="font-size: 0.82rem; color: #8fa0bc; margin-top: 4px;">⚡ Powered by <span style="color: var(--glow); font-weight: 600;">𝚾 𝚫 𝚬 𝚸 · ༎🥀</span></p>
     </div>
 
     <script>
@@ -94,61 +391,126 @@
         const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpuaGtvanhzY2tkZ3N2YWFnZmhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0MDIxMDYsImV4cCI6MjA5NDk3ODEwNn0.hPBHq55bv9F0g9-mmgukyYZdZc-YM_Ye4B7IPsGdles";
         const supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
 
-        function openSection(type) {
-            document.getElementById('menu-screen').style.display = 'none';
-            document.getElementById('content-area').style.display = 'block';
-            document.getElementById('our-container').style.display = (type === 'our') ? 'block' : 'none';
-            document.getElementById('all-container').style.display = (type === 'all') ? 'block' : 'none';
-            window.scrollTo(0,0);
-        }
+        // 🟢 टेलीग्राम यूजरनेम लिंक
+        const TELEGRAM_USERNAME = "Avigat1210"; 
 
-        function showMenu() {
-            document.getElementById('menu-screen').style.display = 'block';
-            document.getElementById('content-area').style.display = 'none';
-        }
+        let rawHtmlBatches = [];
+        let rawDemoBatches = [];
+        let currentFilter = 'all';
 
         async function loadData() {
             const { data: n } = await supabaseClient.from('batches').select('*');
             const { data: d } = await supabaseClient.from('demo_batches').select('*');
             
-            const nL = document.getElementById('our-batches-list'), dL = document.getElementById('all-batches-list');
-            nL.innerHTML = ""; dL.innerHTML = "";
+            rawHtmlBatches = n || [];
+            rawDemoBatches = d || [];
 
-            if(d) d.forEach(b => {
-                // 🏷️ स्मार्ट ऑफर टैग लॉजिक (NaN फिक्स)
-                let discHtml = "";
-                let priceHtml = `<div class="price-box"><span class="new-p">₹${b.offer_price}</span></div>`;
-                
-                // अगर old_price है और वो offer_price से ज्यादा है तभी टैग दिखाओ
-                if(b.old_price && Number(b.old_price) > Number(b.offer_price)) {
-                    let disc = Math.round(((b.old_price - b.offer_price) / b.old_price) * 100);
-                    discHtml = `<div class="discount-badge">${disc}% OFF</div>`;
-                    priceHtml = `<div class="price-box"><span class="old-p">₹${b.old_price}</span><span class="new-p">₹${b.offer_price}</span></div>`;
-                }
-
-                dL.innerHTML += `
-                    <div class="demo-card">
-                        ${discHtml}
-                        <img src="${b.thumbnail}" onerror="this.src='https://via.placeholder.com/350x200?text=Image+Not+Found'">
-                        <div class="card-body">
-                            <div style="color:var(--glow); font-size:1.3rem; font-weight:bold; margin-bottom:10px;">${b.name}</div>
-                            <div class="payment-box">
-                                💳 <b>पेमेंट निर्देश:</b><br>
-                                1. 🎁 बटन से गिफ्ट कार्ड लें।<br>
-                                2. ₹${b.offer_price} पे करें और स्क्रीनशॉट भेजें।
-                            </div>
-                            <a href="https://phon.pe/4fjyavab" target="_blank" class="gift-btn">🎁 BUY PHONEPE GIFT CARD</a>
-                            <div style="color:var(--yellow); font-size:0.8rem; font-weight:bold; text-align:center;">VALIDITY: LIFETIME</div>
-                            ${priceHtml}
-                            <a href="https://t.me/Avigat1210?text=नमस्ते सचिन भाई, मैंने ${b.name} के लिए पेमेंट कर दिया है।" target="_blank" class="ss-btn">🛒 SEND SCREENSHOT</a>
-                        </div>
-                    </div>`;
-            });
-
-            if(n) n.forEach(b => {
-                nL.innerHTML += `<a href="${b.link}" target="_blank" class="magic-link">${b.name}</a>`;
-            });
+            renderItems();
         }
+
+        function setFilter(type, btn) {
+            currentFilter = type;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderItems();
+        }
+
+        function filterContent() {
+            renderItems();
+        }
+
+        function renderItems() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const nL = document.getElementById('our-batches-list');
+            const dL = document.getElementById('all-batches-list');
+            const premSec = document.getElementById('premiumSection');
+            const htmlSec = document.getElementById('htmlSection');
+            const noRes = document.getElementById('noResults');
+
+            nL.innerHTML = ""; 
+            dL.innerHTML = "";
+
+            // सर्च फ़िल्टर
+            const filteredDemo = rawDemoBatches.filter(b => b.name && b.name.toLowerCase().includes(query));
+            const filteredHtml = rawHtmlBatches.filter(b => b.name && b.name.toLowerCase().includes(query));
+
+            let hasDemo = false;
+            let hasHtml = false;
+
+            // 1. प्रीमियम बैचेस रेंडर
+            if (currentFilter === 'all' || currentFilter === 'premium') {
+                if (filteredDemo.length > 0) {
+                    premSec.style.display = "block";
+                    hasDemo = true;
+                    filteredDemo.forEach(b => {
+                        let discHtml = "";
+                        let cleanOffer = Number(String(b.offer_price || "").replace(/[^0-9]/g, ''));
+                        let cleanOld = Number(String(b.old_price || "").replace(/[^0-9]/g, ''));
+
+                        let priceHtml = `<div class="price-box"><span class="new-p">₹${cleanOffer || b.offer_price}</span></div>`;
+                        
+                        if(cleanOld && cleanOffer && cleanOld > cleanOffer) {
+                            let disc = Math.round(((cleanOld - cleanOffer) / cleanOld) * 100);
+                            discHtml = `<div class="discount-badge">${disc}% OFF</div>`;
+                            priceHtml = `<div class="price-box"><span class="old-p">₹${cleanOld}</span><span class="new-p">₹${cleanOffer}</span></div>`;
+                        }
+
+                        const telegramLink = `https://t.me/${TELEGRAM_USERNAME}?text=${encodeURIComponent("नमस्ते, मैंने " + b.name + " के लिए पेमेंट कर दिया है। कृपया बैच एक्सेस दें।")}`;
+
+                        dL.innerHTML += `
+                            <div class="demo-card">
+                                <div class="card-thumb-wrap">
+                                    ${discHtml}
+                                    <img src="${b.thumbnail}" onerror="this.src='https://via.placeholder.com/350x200?text=Image+Not+Found'">
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">${b.name}</div>
+                                    <div class="payment-box">
+                                        💳 <b>पेमेंट निर्देश:</b><br>
+                                        1. 🎁 बटन से गिफ्ट कार्ड लें।<br>
+                                        2. ₹${cleanOffer || b.offer_price} पे करें और स्क्रीनशॉट भेजें।
+                                    </div>
+                                    <a href="https://phon.pe/4fjyavab" target="_blank" class="gift-btn">🎁 BUY PHONEPE GIFT CARD</a>
+                                    <div style="color:var(--yellow); font-size:0.75rem; font-weight:bold; text-align:center; margin: 4px 0 8px;">VALIDITY: LIFETIME</div>
+                                    ${priceHtml}
+                                    <a href="${telegramLink}" target="_blank" class="ss-btn">🛒 SEND SCREENSHOT</a>
+                                </div>
+                            </div>`;
+                    });
+                } else {
+                    premSec.style.display = "none";
+                }
+            } else {
+                premSec.style.display = "none";
+            }
+
+            // 2. HTML फाइल्स रेंडर
+            if (currentFilter === 'all' || currentFilter === 'html') {
+                if (filteredHtml.length > 0) {
+                    htmlSec.style.display = "block";
+                    hasHtml = true;
+                    filteredHtml.forEach(b => {
+                        nL.innerHTML += `
+                            <a href="${b.link}" target="_blank" class="magic-link">
+                                <span>📄 ${b.name}</span>
+                                <span style="font-size:1.2rem; color:var(--glow);">➔</span>
+                            </a>`;
+                    });
+                } else {
+                    htmlSec.style.display = "none";
+                }
+            } else {
+                htmlSec.style.display = "none";
+            }
+
+            // अगर दोनों में कुछ नहीं मिला
+            if (!hasDemo && !hasHtml) {
+                noRes.style.display = "block";
+            } else {
+                noRes.style.display = "none";
+            }
+        }
+
         window.onload = loadData;
     </script>
 </body>
