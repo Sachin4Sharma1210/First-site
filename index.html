@@ -36,6 +36,7 @@
             flex-direction: column;
         }
 
+        /* 🚨 महा-सेल नोटिस बैनर & लाइव टाइमर */
         #saleBanner {
             display: none;
             background: linear-gradient(90deg, #ff0055, #7928ca, #ff0055);
@@ -217,6 +218,7 @@
             transform: translateX(4px);
         }
 
+        /* 🔍 कुछ न मिलने पर स्टाइलिश मैसेज */
         .not-found-card {
             background: rgba(16, 20, 31, 0.7);
             border: 1.5px dashed rgba(255, 0, 127, 0.4);
@@ -228,7 +230,7 @@
         .not-found-card h3 { color: var(--pink); font-size: 1.25rem; margin-bottom: 8px; }
         .not-found-card p { color: #8fa0bc; font-size: 0.88rem; line-height: 1.6; }
 
-        /* 🌟 फीडबैक कैरोसेल बॉक्स (बिना किसी ऊपर के नाम/हेडर के) */
+        /* 🌟 यूजर फीडबैक कैरोसेल बॉक्स (बिना किसी हेडर के) */
         .feedback-wrapper {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -359,6 +361,7 @@
             transform: translateY(-2px);
         }
 
+        /* 📝 मोडल */
         #fbModal {
             display: none;
             position: fixed;
@@ -469,6 +472,7 @@
             line-height: 1.5;
         }
 
+        /* 🔝 Back to Top फ्लोटिंग बटन */
         #backToTop {
             position: fixed;
             bottom: 25px;
@@ -496,6 +500,7 @@
 </head>
 <body>
 
+    <!-- 🚨 महा-सेल नोटिस बैनर & लाइव टाइमर -->
     <div id="saleBanner">
         <span id="saleTitle">🔥 SPECIAL SALE ACTIVE!</span> 
         <span class="timer-box" id="saleTimer">00:00:00</span>
@@ -517,6 +522,7 @@
     </div>
 
     <div class="main-container">
+        <!-- कोई रिज़ल्ट न मिलने पर दिखने वाला बॉक्स -->
         <div id="noResultsBox" class="not-found-card" style="display: none;">
             <h3>🔍 कोई बैच या फ़ाइल नहीं मिली!</h3>
             <p>कृपया नाम की स्पेलिंग जांचें या कोई अन्य शब्द लिखकर खोजें।</p>
@@ -532,7 +538,7 @@
             <div class="html-list" id="our-batches-list"></div>
         </div>
 
-        <!-- 🌟 बिना हेडर का ऑटो-अडैप्टिव फीडबैक कैरोसेल -->
+        <!-- 🌟 बिना किसी हेडर का ऑटो-अडैप्टिव फीडबैक कैरोसेल -->
         <div id="feedbackSection">
             <div class="feedback-wrapper">
                 <div class="carousel-view" id="carouselWrapper">
@@ -552,6 +558,7 @@
         </div>
     </div>
 
+    <!-- 📝 फीडबैक मोडल -->
     <div id="fbModal">
         <div class="modal-card">
             <button class="close-btn" id="closeFbBtn">✕</button>
@@ -678,7 +685,7 @@
             }, 1000);
         }
 
-        // --- बैचेस रेंडर लॉजिक (All, Premium, HTML फ़िल्टर) ---
+        // --- बैचेस रेंडर लॉजिक ---
         function renderItems() {
             const query = (document.getElementById('searchInput').value || "").toLowerCase().trim();
             const nL = document.getElementById('our-batches-list');
@@ -698,7 +705,7 @@
                 noResBox.style.display = "none";
             }
 
-            // 1. प्रीमियम बैचेस सेक्शन विज़िबिलिटी
+            // 1. प्रीमियम बैचेस
             if (currentFilter === 'all' || currentFilter === 'premium') {
                 document.getElementById('premiumSection').style.display = filteredDemo.length ? "block" : "none";
                 filteredDemo.forEach((b, index) => {
@@ -741,7 +748,7 @@
                 document.getElementById('premiumSection').style.display = "none"; 
             }
 
-            // 2. HTML फाइल्स सेक्शन विज़िबिलिटी
+            // 2. HTML फाइल्स
             if (currentFilter === 'all' || currentFilter === 'html') {
                 document.getElementById('htmlSection').style.display = filteredHtml.length ? "block" : "none";
                 filteredHtml.forEach(b => {
@@ -756,7 +763,7 @@
             }
         }
 
-        // --- इवेंट लिसनर्स (ReferenceError से 100% सुरक्षा) ---
+        // --- टैब फिल्टर्स और सर्च ---
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -768,7 +775,7 @@
 
         document.getElementById('searchInput').addEventListener('input', renderItems);
 
-        // --- फीडबैक सिस्टम ---
+        // --- फीडबैक लोड लॉजिक ---
         async function loadFeedbacks() {
             try {
                 const { data: fbs } = await supabaseClient
@@ -877,6 +884,7 @@
             };
         });
 
+        // 🚀 सीधे Supabase + Telegram Bot पर इंस्टेंट अलर्ट भेजने वाला सबमिशन
         document.getElementById('submitFbBtn').onclick = async () => {
             const name = document.getElementById("fbName").value.trim();
             const comment = document.getElementById("fbComment").value.trim();
@@ -886,14 +894,53 @@
                 return;
             }
 
-            const { error } = await supabaseClient.from('feedbacks').insert({
+            // 1. Supabase में सेव करें
+            const { data, error } = await supabaseClient.from('feedbacks').insert([{
                 user_name: name,
                 rating: pickedRating,
                 comment: comment,
                 status: 'pending'
-            });
+            }]).select();
 
-            if (!error) {
+            if (!error && data && data.length > 0) {
+                const newId = data[0].id;
+
+                // 2. सीधे टेलीग्राम बॉट पर एडमिन को तुरंत अलर्ट भेजें
+                const BOT_TOKEN = "8644662953:AAHygeH90nH8XP4iu1SKP_oZcCe0qQ0BglE";
+                const ADMIN_CHAT_ID = "7850454902";
+                const starsText = "⭐".repeat(pickedRating);
+
+                const msgText = `📬 <b>नया यूजर फीडबैक आया है!</b>\n\n` +
+                                `🆔 <b>ID:</b> <code>#${newId}</code>\n` +
+                                `👤 <b>नाम:</b> ${name}\n` +
+                                `🌟 <b>रेटिंग:</b> ${starsText} (${pickedRating}/5)\n` +
+                                `💬 <b>टिप्पणी:</b>\n<i>"${comment}"</i>\n\n` +
+                                `क्या आप इसे वेबसाइट पर लाइव करना चाहते हैं?`;
+
+                const inlineKeyboard = {
+                    inline_keyboard: [
+                        [
+                            { text: "✅ Approve (लाइव करें)", callback_data: `fb_app_${newId}` },
+                            { text: "❌ Reject (डिलीट करें)", callback_data: `fb_rej_${newId}` }
+                        ]
+                    ]
+                };
+
+                try {
+                    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            chat_id: ADMIN_CHAT_ID,
+                            text: msgText,
+                            parse_mode: "HTML",
+                            reply_markup: inlineKeyboard
+                        })
+                    });
+                } catch (e) {
+                    console.error("Telegram alert error:", e);
+                }
+
                 document.getElementById("fbName").value = "";
                 document.getElementById("fbComment").value = "";
                 document.getElementById("fbStatusMsg").style.display = "block";
@@ -901,7 +948,7 @@
                     document.getElementById("fbModal").style.display = "none";
                 }, 3500);
             } else {
-                alert("एरर: फीडबैक सबमिट नहीं हो सका!");
+                alert("एरर: " + (error ? error.message : "फीडबैक सबमिट नहीं हो सका!"));
             }
         };
 
@@ -912,7 +959,6 @@
         };
         bTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        // लोड इनिशियलाइजेशन
         window.addEventListener('DOMContentLoaded', loadData);
     </script>
 </body>
