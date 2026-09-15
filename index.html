@@ -136,7 +136,6 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.5);
         }
 
-        /* 🖼️ थंबनेल पूरा और सही दिखने के लिए */
         .card-thumb-wrap {
             position: relative;
             width: 100%;
@@ -153,7 +152,6 @@
             object-fit: contain; 
         }
 
-        /* ✨ NEW बैज */
         .new-badge {
             position: absolute;
             top: 12px;
@@ -214,6 +212,26 @@
             text-decoration: none; font-weight: 600; font-size: 0.95rem;
         }
 
+        /* 🔍 कुछ न मिलने पर स्टाइलिश मैसेज */
+        .not-found-card {
+            background: rgba(16, 20, 31, 0.7);
+            border: 1.5px dashed rgba(255, 0, 127, 0.4);
+            border-radius: 18px;
+            padding: 35px 20px;
+            margin: 30px auto;
+            max-width: 500px;
+        }
+        .not-found-card h3 {
+            color: var(--pink);
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+        }
+        .not-found-card p {
+            color: #8fa0bc;
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
         /* 🔝 Back to Top फ्लोटिंग बटन */
         #backToTop {
             position: fixed;
@@ -264,6 +282,12 @@
     </div>
 
     <div class="main-container">
+        <!-- कोई रिज़ल्ट न मिलने पर दिखने वाला बॉक्स -->
+        <div id="noResultsBox" class="not-found-card" style="display: none;">
+            <h3>🔍 कोई बैच या फ़ाइल नहीं मिली!</h3>
+            <p>कृपया नाम की स्पेलिंग जांचें या कोई अन्य शब्द लिखकर खोजें।</p>
+        </div>
+
         <div id="premiumSection">
             <h3 class="section-header">🔥 PREMIUM BATCHES</h3>
             <div class="cards-grid" id="all-batches-list"></div>
@@ -299,7 +323,6 @@
             
             rawDemoBatches = d || [];
             
-            // महा-सेल सेटिंग्स चेक करना
             const saleConfig = (n || []).find(x => x.name === "SYSTEM_SALE_CONFIG");
             if (saleConfig && saleConfig.link) {
                 setupSaleTimer(saleConfig.link);
@@ -356,13 +379,25 @@
         }
 
         function renderItems() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            // Case-Insensitive सर्च (छोटे व बड़े दोनों अक्षरों का समर्थन)
+            const query = (document.getElementById('searchInput').value || "").toLowerCase().trim();
             const nL = document.getElementById('our-batches-list');
             const dL = document.getElementById('all-batches-list');
+            const noResBox = document.getElementById('noResultsBox');
             nL.innerHTML = ""; dL.innerHTML = "";
 
             const filteredDemo = rawDemoBatches.filter(b => b.name && b.name.toLowerCase().includes(query));
             const filteredHtml = rawHtmlBatches.filter(b => b.name && b.name.toLowerCase().includes(query));
+
+            let showDemo = (currentFilter === 'all' || currentFilter === 'premium') && filteredDemo.length > 0;
+            let showHtml = (currentFilter === 'all' || currentFilter === 'html') && filteredHtml.length > 0;
+
+            // रिज़ल्ट न मिलने पर संदेश दिखाना
+            if (!showDemo && !showHtml && query !== "") {
+                noResBox.style.display = "block";
+            } else {
+                noResBox.style.display = "none";
+            }
 
             if (currentFilter === 'all' || currentFilter === 'premium') {
                 document.getElementById('premiumSection').style.display = filteredDemo.length ? "block" : "none";
@@ -378,7 +413,6 @@
                         priceHtml = `<div class="price-box"><span class="old-p">₹${cleanOld}</span><span class="new-p">₹${cleanOffer}</span></div>`;
                     }
 
-                    // सबसे पहले वाले 2 ताज़ा बैचेस पर NEW बैज
                     const newBadgeHtml = index < 2 ? `<div class="new-badge">🔥 NEW</div>` : "";
                     const telegramLink = `https://t.me/${TELEGRAM_USERNAME}?text=${encodeURIComponent("नमस्ते, मैंने " + b.name + " के लिए पेमेंट कर दिया है।")}`;
 
@@ -417,7 +451,6 @@
             } else { document.getElementById('htmlSection').style.display = "none"; }
         }
 
-        // 🔝 स्क्रॉल बटन नियंत्रण
         window.onscroll = function() {
             const btn = document.getElementById("backToTop");
             if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
