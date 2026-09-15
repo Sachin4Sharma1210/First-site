@@ -1,466 +1,919 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>➤ 𝚾 𝚫 𝚬 𝚸 · ༎🥀 | Official</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root { 
-            --glow: #00d2ff; 
-            --bg: #07090e; 
-            --card-bg: rgba(16, 20, 31, 0.9);
-            --card-border: rgba(0, 210, 255, 0.18);
-            --pink: #ff007f; 
-            --green: #00ff88; 
-            --yellow: #ffdf00; 
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>𝚾 𝚫 𝚬 𝚸 · ༎🥀 | Official Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(18, 26, 43, 0.75);
+      --card-border: rgba(45, 62, 99, 0.5);
+      --accent: #00e5ff;
+      --accent-glow: rgba(0, 229, 255, 0.25);
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --sale-glow: rgba(255, 51, 102, 0.35);
+    }
 
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            scroll-behavior: smooth; 
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        body { 
-            background: var(--bg); 
-            background-image: radial-gradient(circle at 50% 0%, #151c2e 0%, #07090e 70%);
-            color: white; 
-            font-family: 'Poppins', sans-serif; 
-            overflow-x: hidden; 
-            text-align: center; 
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 229, 255, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255, 51, 102, 0.04) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
 
-        /* 🚨 महा-सेल नोटिस बैनर & लाइव टाइमर */
-        #saleBanner {
-            display: none;
-            background: linear-gradient(90deg, #ff0055, #7928ca, #ff0055);
-            background-size: 200% 200%;
-            animation: gradientMove 3s ease infinite;
-            padding: 12px 15px;
-            font-weight: 700;
-            font-size: 0.92rem;
-            color: white;
-            box-shadow: 0 4px 20px rgba(255, 0, 85, 0.4);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .timer-box {
-            font-family: 'Orbitron', sans-serif;
-            background: rgba(0,0,0,0.55);
-            padding: 4px 10px;
-            border-radius: 6px;
-            margin-left: 8px;
-            letter-spacing: 1px;
-            color: var(--yellow);
-            display: inline-block;
-        }
-        
-        .header { 
-            padding: 40px 20px 20px; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
-            background: rgba(7, 9, 14, 0.6);
-            backdrop-filter: blur(10px);
-        }
-        .header img { 
-            width: 100px; height: 100px;
-            border-radius: 50%; 
-            border: 3px solid var(--glow); 
-            box-shadow: 0 0 25px rgba(0, 210, 255, 0.4); 
-            margin-bottom: 12px; 
-            object-fit: cover;
-        }
-        .header h1 { 
-            font-size: 1.6rem; 
-            font-weight: 700;
-            color: #ffffff; 
-            letter-spacing: 1px;
-            text-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
-        }
+    #sale-banner {
+      display: none;
+      background: linear-gradient(90deg, #ff0055, #7928ca, #ff0055);
+      background-size: 200% auto;
+      animation: gradientMove 3s linear infinite;
+      color: #fff;
+      text-align: center;
+      padding: 10px 15px;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 4px 15px var(--sale-glow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
 
-        .control-panel { max-width: 550px; margin: 20px auto 10px; padding: 0 20px; width: 100%; }
-        .search-box {
-            width: 100%;
-            padding: 13px 20px;
-            background: rgba(16, 22, 36, 0.95);
-            border: 1.5px solid #23304a;
-            border-radius: 30px;
-            color: #fff;
-            font-size: 0.95rem;
-            outline: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-        .search-box:focus { border-color: var(--glow); box-shadow: 0 0 18px rgba(0, 210, 255, 0.35); }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-        .filter-tabs { display: flex; justify-content: center; gap: 8px; margin: 15px 0 25px; flex-wrap: wrap; }
-        .tab-btn {
-            background: #101624; border: 1px solid #253350; color: #9aa9c3;
-            padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; font-weight: 600;
-        }
-        .tab-btn.active {
-            background: linear-gradient(135deg, var(--glow), #0072ff);
-            color: #000; font-weight: 700; border-color: transparent;
-        }
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 20px 16px;
+      width: 100%;
+      flex: 1;
+    }
 
-        .main-container { max-width: 960px; width: 100%; margin: 0 auto; padding: 10px 20px 60px; flex: 1; }
-        .section-header { 
-            color: var(--yellow); font-family: 'Orbitron', sans-serif; 
-            margin: 30px 0 20px; font-size: 1.2rem; text-align: left;
-            border-left: 4px solid var(--yellow); padding-left: 10px;
-        }
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
 
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-            gap: 24px;
-        }
-        .demo-card { 
-            background: var(--card-bg); 
-            border: 1px solid var(--card-border); 
-            border-radius: 18px; 
-            overflow: hidden; 
-            position: relative; 
-            text-align: left;
-            display: flex; flex-direction: column;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-        }
+    .logo-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px var(--accent-glow);
+      margin-bottom: 6px;
+    }
 
-        .card-thumb-wrap {
-            position: relative;
-            width: 100%;
-            height: 190px;
-            background: #05070c;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .demo-card img { 
-            max-width: 100%; 
-            max-height: 100%; 
-            object-fit: contain; 
-        }
+    .sub-title {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
 
-        .new-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: linear-gradient(135deg, #00d2ff, #0072ff);
-            color: #000;
-            font-weight: 900;
-            font-size: 0.72rem;
-            padding: 4px 10px;
-            border-radius: 6px;
-            box-shadow: 0 0 12px rgba(0, 210, 255, 0.7);
-            z-index: 10;
-        }
+    .search-box {
+      position: relative;
+      margin-bottom: 20px;
+    }
 
-        .discount-badge {
-            position: absolute; top: 12px; left: 12px; 
-            background: linear-gradient(135deg, var(--pink), #ff0044); 
-            color: white; padding: 4px 10px; border-radius: 6px; 
-            font-weight: 800; font-size: 0.78rem; z-index: 10;
-        }
+    .search-box input {
+      width: 100%;
+      padding: 14px 18px 14px 44px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
 
-        .card-body { padding: 16px; display: flex; flex-direction: column; flex: 1; }
-        .card-title { color: #fff; font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; line-height: 1.4; min-height: 44px; }
-        
-        .payment-box { 
-            border: 1px dashed rgba(255, 255, 255, 0.18); 
-            border-radius: 12px; 
-            padding: 10px; 
-            margin: 6px 0 12px; 
-            font-size: 0.8rem; 
-            background: rgba(255, 255, 255, 0.02); 
-            color: #cbd5e1;
-            line-height: 1.5;
-        }
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
 
-        .gift-btn { 
-            display: flex; align-items: center; justify-content: center; 
-            background: linear-gradient(135deg, #6c24be, #4a1586); 
-            color: white; padding: 10px; border-radius: 8px; text-decoration: none; 
-            font-weight: 600; font-size: 0.85rem; margin-bottom: 10px; 
-        }
-        .ss-btn { 
-            display: flex; align-items: center; justify-content: center; 
-            background: linear-gradient(135deg, var(--green), #00c968); 
-            color: #03140a; padding: 11px; border-radius: 8px; text-decoration: none; 
-            font-weight: 800; text-align: center; font-size: 0.9rem; margin-top: auto;
-        }
-        
-        .price-box { display: flex; align-items: baseline; gap: 8px; margin: 6px 0 12px; justify-content: center; }
-        .old-p { text-decoration: line-through; color: #718096; font-size: 1rem; }
-        .new-p { color: var(--green); font-size: 1.6rem; font-weight: 900; font-family: 'Orbitron', sans-serif; }
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 16px;
+    }
 
-        .html-list { display: flex; flex-direction: column; gap: 12px; }
-        .magic-link { 
-            background: var(--card-bg); border: 1px solid var(--card-border); 
-            color: var(--glow); padding: 15px 20px; border-radius: 12px; 
-            display: flex; justify-content: space-between; align-items: center; 
-            text-decoration: none; font-weight: 600; font-size: 0.95rem;
-        }
+    .filter-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
 
-        /* 🔍 कुछ न मिलने पर स्टाइलिश मैसेज */
-        .not-found-card {
-            background: rgba(16, 20, 31, 0.7);
-            border: 1.5px dashed rgba(255, 0, 127, 0.4);
-            border-radius: 18px;
-            padding: 35px 20px;
-            margin: 30px auto;
-            max-width: 500px;
-        }
-        .not-found-card h3 {
-            color: var(--pink);
-            font-size: 1.25rem;
-            margin-bottom: 8px;
-        }
-        .not-found-card p {
-            color: #8fa0bc;
-            font-size: 0.88rem;
-            line-height: 1.6;
-        }
+    .tab-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
 
-        /* 🔝 Back to Top फ्लोटिंग बटन */
-        #backToTop {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--glow), #0072ff);
-            color: #000;
-            border: none;
-            border-radius: 50%;
-            font-size: 1.3rem;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0, 210, 255, 0.4);
-            display: none;
-            z-index: 999;
-            transition: all 0.3s ease;
-        }
-        #backToTop:hover { transform: translateY(-4px); box-shadow: 0 0 25px rgba(0, 210, 255, 0.8); }
+    .tab-btn.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
 
-        .footer {
-            margin-top: auto; padding: 25px 20px; background: #05070a;
-            border-top: 1px solid rgba(255, 255, 255, 0.06); font-size: 0.85rem;
-        }
-    </style>
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin: 25px 0 15px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-left: 4px solid var(--accent);
+      padding-left: 10px;
+    }
+
+    .poster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .poster-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .poster-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+
+    .poster-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: #111;
+    }
+
+    .poster-content {
+      padding: 14px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .batch-name {
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 12px;
+      color: #fff;
+      line-height: 1.4;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .old-price {
+      text-decoration: line-through;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .offer-price {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .buy-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #00e5ff, #0088ff);
+      color: #000;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      transition: opacity 0.2s;
+    }
+
+    .buy-btn:hover { opacity: 0.9; }
+
+    .html-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .html-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .html-card:hover {
+      border-color: var(--accent);
+      background: rgba(0, 229, 255, 0.03);
+    }
+
+    .html-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .html-arrow {
+      color: var(--accent);
+      font-size: 16px;
+    }
+
+    /* ==========================================
+       🌟 फीडबैक कैरोसेल स्लाइडर & कार्ड्स
+       ========================================== */
+    .feedback-section {
+      margin-top: 15px;
+      margin-bottom: 35px;
+    }
+
+    .feedback-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 20px;
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      min-height: 140px;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+    }
+
+    .feedback-slide {
+      min-width: 100%;
+      box-sizing: border-box;
+      padding: 5px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .fb-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .fb-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      color: #000;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+    }
+
+    .fb-user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .fb-name {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    .fb-stars {
+      color: #ffb800;
+      font-size: 13px;
+      margin-top: 2px;
+      letter-spacing: 2px;
+    }
+
+    .fb-comment {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #cbd5e1;
+      font-style: italic;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 12px 16px;
+      border-radius: 12px;
+      border-left: 3px solid var(--accent);
+    }
+
+    /* बिंदु (Dots) */
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dot.active {
+      width: 24px;
+      border-radius: 10px;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    /* फीडबैक बटन */
+    .fb-action-row {
+      display: flex;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    .open-fb-btn {
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px dashed var(--accent);
+      color: var(--accent);
+      padding: 10px 22px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .open-fb-btn:hover {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    /* ==========================================
+       📝 फीडबैक सबमिशन मोडल
+       ========================================== */
+    #fbModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 7, 13, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-box {
+      background: #111827;
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      position: relative;
+    }
+
+    .close-modal {
+      position: absolute;
+      right: 18px;
+      top: 18px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 20px;
+      background: none;
+      border: none;
+    }
+
+    .modal-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .fb-form-group {
+      margin-bottom: 14px;
+    }
+
+    .fb-form-group label {
+      display: block;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .fb-form-group input, .fb-form-group textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 12px;
+      color: #fff;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .fb-form-group input:focus, .fb-form-group textarea:focus {
+      border-color: var(--accent);
+    }
+
+    /* स्टार रेटिंग पिकर */
+    .star-rating {
+      display: flex;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 24px;
+      color: rgba(255,255,255,0.2);
+    }
+
+    .star-rating .star.selected {
+      color: #ffb800;
+      text-shadow: 0 0 10px rgba(255, 184, 0, 0.4);
+    }
+
+    .submit-fb-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #00e5ff, #0088ff);
+      color: #000;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #fbSuccessMsg {
+      display: none;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid #10b981;
+      color: #6ee7b7;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      text-align: center;
+      margin-top: 12px;
+      line-height: 1.4;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 16px 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      margin-top: auto;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--accent); }
+  </style>
 </head>
 <body>
 
-    <!-- 🚨 महा-सेल नोटिस बैनर & लाइव टाइमर -->
-    <div id="saleBanner">
-        <span id="saleTitle">🔥 SPECIAL SALE ACTIVE!</span> 
-        <span class="timer-box" id="saleTimer">00:00:00</span>
+  <!-- महा-सेल बैनर -->
+  <div id="sale-banner">
+    <span id="banner-text">🔥 SPECIAL SALE LIVE!</span>
+    <span id="timer-box" style="margin-left:8px; background:rgba(0,0,0,0.3); padding:3px 8px; border-radius:6px;"></span>
+  </div>
+
+  <div class="container">
+    <header>
+      <div class="logo-title">𝚾 𝚫 𝚬 𝚸 · ༎🥀</div>
+      <div class="sub-title">प्रीमियम डिजिटल कोर्सेज & रिसोर्सेज पोर्टल</div>
+    </header>
+
+    <!-- सर्च बार -->
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="कोर्स या HTML फाइल सर्च करें...">
     </div>
 
-    <div class="header">
-        <img src="https://files.catbox.moe/qik5aw.png" alt="Profile">
-        <h1>𝚾 𝚫 𝚬 𝚸 · ༎🥀</h1>
-        <p style="color: #8fa0bc; font-size: 0.85rem; margin-top: 4px;">OFFICIAL DIGITAL PORTAL</p>
+    <!-- फिल्टर्स -->
+    <div class="filter-tabs">
+      <button class="tab-btn active" onclick="filterTab('all', this)">All</button>
+      <button class="tab-btn" onclick="filterTab('premium', this)">🔥 Premium</button>
+      <button class="tab-btn" onclick="filterTab('free', this)">📖 Free HTML</button>
     </div>
 
-    <div class="control-panel">
-        <input type="text" id="searchInput" class="search-box" placeholder="🔍 कोर्स या HTML फाइल सर्च करें..." oninput="renderItems()">
-        <div class="filter-tabs">
-            <button class="tab-btn active" onclick="setFilter('all', this)">All</button>
-            <button class="tab-btn" onclick="setFilter('premium', this)">🔥 Premium</button>
-            <button class="tab-btn" onclick="setFilter('html', this)">📖 Free HTML</button>
+    <!-- पोस्टर बैचेस ग्रिड -->
+    <div id="poster-section">
+      <div class="section-title">🔥 PREMIUM BATCHES</div>
+      <div class="poster-grid" id="posterGrid"></div>
+    </div>
+
+    <!-- साधारण HTML फाइल्स -->
+    <div id="html-section">
+      <div class="section-title">📖 OUR HTML FILES</div>
+      <div class="html-list" id="htmlList"></div>
+    </div>
+
+    <!-- 🌟 छात्र / यूजर फीडबैक कैरोसेल -->
+    <div class="feedback-section">
+      <div class="section-title">💬 यूजर फीडबैक & रिव्यूज</div>
+      <div class="feedback-box">
+        <div class="carousel-container" id="carouselWrapper">
+          <div class="carousel-track" id="fbTrack">
+            <!-- डायनामिक रिव्यूज लोड होंगे -->
+            <div class="feedback-slide">
+              <div style="text-align:center; color:var(--text-muted); font-size:14px; padding:20px;">लोड हो रहा है...</div>
+            </div>
+          </div>
         </div>
-    </div>
-
-    <div class="main-container">
-        <!-- कोई रिज़ल्ट न मिलने पर दिखने वाला बॉक्स -->
-        <div id="noResultsBox" class="not-found-card" style="display: none;">
-            <h3>🔍 कोई बैच या फ़ाइल नहीं मिली!</h3>
-            <p>कृपया नाम की स्पेलिंग जांचें या कोई अन्य शब्द लिखकर खोजें।</p>
+        <div class="carousel-dots" id="fbDots"></div>
+        <div class="fb-action-row">
+          <button class="open-fb-btn" onclick="openFbModal()">✍️ अपना फीडबैक दें</button>
         </div>
-
-        <div id="premiumSection">
-            <h3 class="section-header">🔥 PREMIUM BATCHES</h3>
-            <div class="cards-grid" id="all-batches-list"></div>
-        </div>
-
-        <div id="htmlSection">
-            <h3 class="section-header">📖 OUR HTML FILES</h3>
-            <div class="html-list" id="our-batches-list"></div>
-        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- 🔝 ऊपर जाने वाला बटन -->
-    <button id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">⬆️</button>
+  <!-- 📝 फीडबैक मोडल फॉर्म -->
+  <div id="fbModal">
+    <div class="modal-box">
+      <button class="close-modal" onclick="closeFbModal()">✕</button>
+      <div class="modal-title">⭐ अपना अनुभव साझा करें</div>
+      
+      <div class="fb-form-group">
+        <label>आपका नाम</label>
+        <input type="text" id="fbName" placeholder="अपना नाम लिखें...">
+      </div>
 
-    <div class="footer">
-        <p>© 2026 <span style="color: var(--glow);">𝚾 𝚫 𝚬 𝚸 · ༎🥀</span> | All Rights Reserved</p>
-        <p style="font-size: 0.8rem; color: #8fa0bc; margin-top: 4px;">⚡ Powered by <span style="color: var(--glow);">𝚾 𝚫 𝚬 𝚸 · ༎🥀</span></p>
+      <div class="fb-form-group">
+        <label>रेटिंग दें</label>
+        <div class="star-rating" id="starPicker">
+          <span class="star selected" onclick="setRating(1)">★</span>
+          <span class="star selected" onclick="setRating(2)">★</span>
+          <span class="star selected" onclick="setRating(3)">★</span>
+          <span class="star selected" onclick="setRating(4)">★</span>
+          <span class="star selected" onclick="setRating(5)">★</span>
+        </div>
+      </div>
+
+      <div class="fb-form-group">
+        <label>आपकी टिप्पणी / फीडबैक</label>
+        <textarea id="fbComment" rows="3" placeholder="कोर्सेज या पोर्टल के बारे में अपनी राय लिखें..."></textarea>
+      </div>
+
+      <button class="submit-fb-btn" onclick="submitFeedback()">फीडबैक सबमिट करें ➔</button>
+      
+      <!-- सफलता संदेश -->
+      <div id="fbSuccessMsg">
+        🎉 <b>धन्यवाद! आपका फीडबैक सबमिट हो गया है।</b><br>
+        समीक्षा के बाद आपका फीडबैक जल्द ही लाइव हो जाएगा!
+      </div>
     </div>
+  </div>
 
-    <script>
-        const SB_URL = "https://jnhkojxsckdgsvaagfhc.supabase.co";
-        const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpuaGtvanhzY2tkZ3N2YWFnZmhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0MDIxMDYsImV4cCI6MjA5NDk3ODEwNn0.hPBHq55bv9F0g9-mmgukyYZdZc-YM_Ye4B7IPsGdles";
-        const supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
-        const TELEGRAM_USERNAME = "Avigat1210"; 
+  <!-- फूटर -->
+  <footer>
+    <div class="footer-links">
+      <a href="https://t.me/Avigat1210" target="_blank">✈️ Telegram Group</a>
+      <a href="https://wa.me/917742300172" target="_blank">💬 WhatsApp</a>
+    </div>
+    <div>© 2026 𝚾 𝚫 𝚬 𝚸 · ༎🥀 | All Rights Reserved</div>
+  </footer>
 
-        let rawHtmlBatches = [];
-        let rawDemoBatches = [];
-        let currentFilter = 'all';
+  <script>
+    const SB_URL = "https://jnhkojxsckdgsvaagfhc.supabase.co";
+    const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpuaGtvanhzY2tkZ3N2YWFnZmhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0MDIxMDYsImV4cCI6MjA5NDk3ODEwNn0.hPBHq55bv9F0g9-mmgukyYZdZc-YM_Ye4B7IPsGdles";
+    const db = supabase.createClient(SB_URL, SB_KEY);
 
-        async function loadData() {
-            const { data: n } = await supabaseClient.from('batches').select('*').order('id', { ascending: false });
-            const { data: d } = await supabaseClient.from('demo_batches').select('*').order('id', { ascending: false });
-            
-            rawDemoBatches = d || [];
-            
-            const saleConfig = (n || []).find(x => x.name === "SYSTEM_SALE_CONFIG");
-            if (saleConfig && saleConfig.link) {
-                setupSaleTimer(saleConfig.link);
-                rawHtmlBatches = (n || []).filter(x => x.name !== "SYSTEM_SALE_CONFIG");
-            } else {
-                rawHtmlBatches = n || [];
-            }
+    let allDemos = [];
+    let allHtmls = [];
+    let feedbacksList = [];
+    let currentSlide = 0;
+    let autoSlideTimer = null;
+    let selectedStarCount = 5;
 
-            renderItems();
-        }
+    // कलरफुल अवतार कलर्स
+    const avatarGradients = [
+      "linear-gradient(135deg, #00e5ff, #0077ff)",
+      "linear-gradient(135deg, #ff007f, #7928ca)",
+      "linear-gradient(135deg, #00f2fe, #4facfe)",
+      "linear-gradient(135deg, #f093fb, #f5576c)",
+      "linear-gradient(135deg, #43e97b, #38f9d7)"
+    ];
 
-        function setupSaleTimer(configStr) {
-            const parts = configStr.split('|');
-            let titleText = "";
-            let expTime = "";
+    async function loadData() {
+      // 1. सेल चेक
+      const { data: saleData } = await db.table("batches").select("*").eq("name", "SYSTEM_SALE_CONFIG").maybeSingle();
+      if (saleData && saleData.link) initSale(saleData.link);
 
-            if (parts[0] === "CUSTOM") {
-                const [mode, pct, targetDate, batchName] = parts;
-                titleText = `🔥 SPECIAL SALE ON ${batchName || 'THIS BATCH'} — FLAT ${pct}% OFF!`;
-                expTime = targetDate;
-            } else {
-                const [mode, pct, targetDate] = parts;
-                titleText = `🔥 SPECIAL SALE — FLAT ${pct}% OFF ON ALL BATCHES!`;
-                expTime = targetDate;
-            }
+      // 2. पोस्टर बैचेस
+      const { data: demos } = await db.table("demo_batches").select("*").order('id', { ascending: false });
+      if (demos) { allDemos = demos; renderPosters(allDemos); }
 
-            const targetTime = new Date(expTime).getTime();
-            const banner = document.getElementById('saleBanner');
-            const timerEl = document.getElementById('saleTimer');
-            document.getElementById('saleTitle').innerText = titleText + " Ends in:";
+      // 3. साधारण HTML
+      const { data: htmls } = await db.table("batches").select("*").neq("name", "SYSTEM_SALE_CONFIG").order('id', { ascending: false });
+      if (htmls) { allHtmls = htmls; renderHtmls(allHtmls); }
 
-            const interval = setInterval(() => {
-                const now = new Date().getTime();
-                const dist = targetTime - now;
+      // 4. फीडबैक्स (केवल Approved)
+      loadFeedbacks();
+    }
 
-                if (dist <= 0) {
-                    clearInterval(interval);
-                    banner.style.display = "none";
-                } else {
-                    banner.style.display = "block";
-                    const h = Math.floor(dist / (1000 * 60 * 60));
-                    const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
-                    const s = Math.floor((dist % (1000 * 60)) / 1000);
-                    timerEl.innerText = `${h}h ${m}m ${s}s`;
-                }
-            }, 1000);
-        }
+    async function loadFeedbacks() {
+      const { data: fbs } = await db.table("feedbacks").select("*").eq("status", "approved").order('id', { ascending: false });
+      if (fbs && fbs.length > 0) {
+        feedbacksList = fbs;
+      } else {
+        // डिफ़ॉल्ट वेलकम रिव्यू अगर डेटाबेस खाली हो
+        feedbacksList = [{
+          user_name: "Sachin Sharma",
+          rating: 5,
+          comment: "𝚾 𝚫 𝚬 𝚸 पोर्टल पर आपका स्वागत है! अपने रिव्यू नीचे दिए गए बटन से दर्ज करें।"
+        }];
+      }
+      renderFeedbackCarousel();
+    }
 
-        function setFilter(type, btn) {
-            currentFilter = type;
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderItems();
-        }
+    function renderFeedbackCarousel() {
+      const track = document.getElementById("fbTrack");
+      const dotsCont = document.getElementById("fbDots");
+      track.innerHTML = "";
+      dotsCont.innerHTML = "";
 
-        function renderItems() {
-            // Case-Insensitive सर्च (छोटे व बड़े दोनों अक्षरों का समर्थन)
-            const query = (document.getElementById('searchInput').value || "").toLowerCase().trim();
-            const nL = document.getElementById('our-batches-list');
-            const dL = document.getElementById('all-batches-list');
-            const noResBox = document.getElementById('noResultsBox');
-            nL.innerHTML = ""; dL.innerHTML = "";
+      feedbacksList.forEach((fb, idx) => {
+        const bgGrad = avatarGradients[idx % avatarGradients.length];
+        const initial = fb.user_name ? fb.user_name.charAt(0).toUpperCase() : "U";
+        const stars = "★".repeat(fb.rating) + "☆".repeat(5 - fb.rating);
 
-            const filteredDemo = rawDemoBatches.filter(b => b.name && b.name.toLowerCase().includes(query));
-            const filteredHtml = rawHtmlBatches.filter(b => b.name && b.name.toLowerCase().includes(query));
+        track.innerHTML += `
+          <div class="feedback-slide">
+            <div class="fb-header">
+              <div class="fb-avatar" style="background:${bgGrad};">${initial}</div>
+              <div class="fb-user-info">
+                <div class="fb-name">${fb.user_name}</div>
+                <div class="fb-stars">${stars}</div>
+              </div>
+            </div>
+            <div class="fb-comment">"${fb.comment}"</div>
+          </div>
+        `;
 
-            let showDemo = (currentFilter === 'all' || currentFilter === 'premium') && filteredDemo.length > 0;
-            let showHtml = (currentFilter === 'all' || currentFilter === 'html') && filteredHtml.length > 0;
+        dotsCont.innerHTML += `<div class="dot ${idx === 0 ? 'active' : ''}" onclick="goToSlide(${idx})"></div>`;
+      });
 
-            // रिज़ल्ट न मिलने पर संदेश दिखाना
-            if (!showDemo && !showHtml && query !== "") {
-                noResBox.style.display = "block";
-            } else {
-                noResBox.style.display = "none";
-            }
+      startAutoSlide();
+    }
 
-            if (currentFilter === 'all' || currentFilter === 'premium') {
-                document.getElementById('premiumSection').style.display = filteredDemo.length ? "block" : "none";
-                filteredDemo.forEach((b, index) => {
-                    let discHtml = "";
-                    let cleanOffer = Number(String(b.offer_price || "").replace(/[^0-9]/g, ''));
-                    let cleanOld = Number(String(b.old_price || "").replace(/[^0-9]/g, ''));
-                    let priceHtml = `<div class="price-box"><span class="new-p">₹${cleanOffer || b.offer_price}</span></div>`;
-                    
-                    if(cleanOld && cleanOffer && cleanOld > cleanOffer) {
-                        let disc = Math.round(((cleanOld - cleanOffer) / cleanOld) * 100);
-                        discHtml = `<div class="discount-badge">${disc}% OFF</div>`;
-                        priceHtml = `<div class="price-box"><span class="old-p">₹${cleanOld}</span><span class="new-p">₹${cleanOffer}</span></div>`;
-                    }
+    function goToSlide(idx) {
+      currentSlide = idx;
+      const track = document.getElementById("fbTrack");
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
 
-                    const newBadgeHtml = index < 2 ? `<div class="new-badge">🔥 NEW</div>` : "";
-                    const telegramLink = `https://t.me/${TELEGRAM_USERNAME}?text=${encodeURIComponent("नमस्ते, मैंने " + b.name + " के लिए पेमेंट कर दिया है।")}`;
+      document.querySelectorAll(".dot").forEach((d, i) => {
+        d.classList.toggle("active", i === currentSlide);
+      });
+    }
 
-                    dL.innerHTML += `
-                        <div class="demo-card">
-                            <div class="card-thumb-wrap">
-                                ${newBadgeHtml}
-                                ${discHtml}
-                                <img src="${b.thumbnail}" onerror="this.src='https://via.placeholder.com/350x200?text=Image+Not+Found'">
-                            </div>
-                            <div class="card-body">
-                                <div class="card-title">${b.name}</div>
-                                <div class="payment-box">
-                                    💳 <b>पेमेंट निर्देश:</b><br>
-                                    1. 🎁 बटन से गिफ्ट कार्ड लें।<br>
-                                    2. ₹${cleanOffer || b.offer_price} पे करें और स्क्रीनशॉट भेजें।
-                                </div>
-                                <a href="https://phon.pe/4fjyavab" target="_blank" class="gift-btn">🎁 BUY PHONEPE GIFT CARD</a>
-                                <div style="color:var(--yellow); font-size:0.75rem; font-weight:bold; text-align:center; margin: 4px 0 8px;">VALIDITY: LIFETIME</div>
-                                ${priceHtml}
-                                <a href="${telegramLink}" target="_blank" class="ss-btn">🛒 SEND SCREENSHOT</a>
-                            </div>
-                        </div>`;
-                });
-            } else { document.getElementById('premiumSection').style.display = "none"; }
+    function startAutoSlide() {
+      clearInterval(autoSlideTimer);
+      if (feedbacksList.length <= 1) return;
+      autoSlideTimer = setInterval(() => {
+        currentSlide = (currentSlide + 1) % feedbacksList.length;
+        goToSlide(currentSlide);
+      }, 4500); // हर 4.5 सेकंड में ऑटो स्वाइप
+    }
 
-            if (currentFilter === 'all' || currentFilter === 'html') {
-                document.getElementById('htmlSection').style.display = filteredHtml.length ? "block" : "none";
-                filteredHtml.forEach(b => {
-                    nL.innerHTML += `
-                        <a href="${b.link}" target="_blank" class="magic-link">
-                            <span>📄 ${b.name}</span>
-                            <span style="color:var(--glow);">➔</span>
-                        </a>`;
-                });
-            } else { document.getElementById('htmlSection').style.display = "none"; }
-        }
+    // टच / स्वाइप सपोर्ट (मोबाइल)
+    let touchStartX = 0;
+    const carouselWrapper = document.getElementById("carouselWrapper");
+    carouselWrapper.addEventListener("touchstart", (e) => touchStartX = e.touches[0].clientX, {passive: true});
+    carouselWrapper.addEventListener("touchend", (e) => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) {
+        if (diff > 0) currentSlide = (currentSlide + 1) % feedbacksList.length;
+        else currentSlide = (currentSlide - 1 + feedbacksList.length) % feedbacksList.length;
+        goToSlide(currentSlide);
+        startAutoSlide();
+      }
+    }, {passive: true});
 
-        window.onscroll = function() {
-            const btn = document.getElementById("backToTop");
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                btn.style.display = "block";
-            } else {
-                btn.style.display = "none";
-            }
-        };
+    // --- मोडल कंट्रोल ---
+    function openFbModal() {
+      document.getElementById("fbModal").style.display = "flex";
+      document.getElementById("fbSuccessMsg").style.display = "none";
+    }
 
-        window.onload = loadData;
-    </script>
+    function closeFbModal() {
+      document.getElementById("fbModal").style.display = "none";
+    }
+
+    function setRating(count) {
+      selectedStarCount = count;
+      const stars = document.querySelectorAll("#starPicker .star");
+      stars.forEach((s, idx) => {
+        s.classList.toggle("selected", idx < count);
+      });
+    }
+
+    async function submitFeedback() {
+      const name = document.getElementById("fbName").value.trim();
+      const comment = document.getElementById("fbComment").value.trim();
+
+      if (!name || !comment) {
+        alert("कृपया अपना नाम और फीडबैक दर्ज करें!");
+        return;
+      }
+
+      const { error } = await db.table("feedbacks").insert({
+        user_name: name,
+        rating: selectedStarCount,
+        comment: comment,
+        status: "pending"
+      });
+
+      if (!error) {
+        document.getElementById("fbName").value = "";
+        document.getElementById("fbComment").value = "";
+        document.getElementById("fbSuccessMsg").style.display = "block";
+        setTimeout(() => closeFbModal(), 3500);
+      } else {
+        alert("एरर: फीडबैक सबमिट नहीं हो सका।");
+      }
+    }
+
+    // --- सेल टाइमर लॉजिक ---
+    function initSale(configStr) {
+      const parts = configStr.split("|");
+      const mode = parts[0];
+      const pct = parts[1];
+      const expStr = parts[2];
+      const customName = parts[3] || "";
+      const expTime = new Date(expStr).getTime();
+
+      const banner = document.getElementById("sale-banner");
+      const bannerText = document.getElementById("banner-text");
+      const timerBox = document.getElementById("timer-box");
+
+      banner.style.display = "block";
+      bannerText.innerHTML = mode === "ALL" 
+        ? `🔥 SPECIAL SALE — FLAT ${pct}% OFF ON ALL BATCHES! Ends in:`
+        : `🎯 MEGA OFFER — ${pct}% OFF ON ${customName}! Ends in:`;
+
+      setInterval(() => {
+        const diff = expTime - new Date().getTime();
+        if (diff <= 0) { banner.style.display = "none"; return; }
+        const h = Math.floor(diff / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+        timerBox.innerText = `${h}h ${m}m ${s}s`;
+      }, 1000);
+    }
+
+    // --- पोस्टर रेंडर ---
+    function renderPosters(list) {
+      const grid = document.getElementById("posterGrid");
+      grid.innerHTML = list.length ? "" : "<div style='color:var(--text-muted);'>कोई बैच नहीं मिला।</div>";
+      list.forEach(b => {
+        grid.innerHTML += `
+          <div class="poster-card">
+            <img class="poster-img" src="${b.thumbnail || 'https://via.placeholder.com/400x225'}" alt="${b.name}" loading="lazy">
+            <div class="poster-content">
+              <div class="batch-name">${b.name}</div>
+              <div class="price-row">
+                <span class="old-price">₹${b.old_price}</span>
+                <span class="offer-price">₹${b.offer_price}</span>
+              </div>
+              <a href="https://t.me/Avigat1210" target="_blank" class="buy-btn">अभी प्राप्त करें ➔</a>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // --- साधारण HTML रेंडर ---
+    function renderHtmls(list) {
+      const cont = document.getElementById("htmlList");
+      cont.innerHTML = list.length ? "" : "<div style='color:var(--text-muted);'>कोई फाइल नहीं मिली।</div>";
+      list.forEach(h => {
+        cont.innerHTML += `
+          <a href="${h.link}" target="_blank" class="html-card">
+            <div class="html-title">📄 <span>${h.name}</span></div>
+            <div class="html-arrow">➔</div>
+          </a>
+        `;
+      });
+    }
+
+    // --- सर्च ---
+    document.getElementById("searchInput").addEventListener("input", function(e) {
+      const q = e.target.value.toLowerCase().trim();
+      renderPosters(allDemos.filter(d => d.name.toLowerCase().includes(q)));
+      renderHtmls(allHtmls.filter(h => h.name.toLowerCase().includes(q)));
+    });
+
+    // --- टैब्स ---
+    function filterTab(type, el) {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      el.classList.add("active");
+      document.getElementById("poster-section").style.display = (type === "free") ? "none" : "block";
+      document.getElementById("html-section").style.display = (type === "premium") ? "none" : "block";
+    }
+
+    loadData();
+  </script>
 </body>
 </html>
